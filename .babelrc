@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-syntax-dynamic-import",
+    "dynamic-import-webpack",
+    "dynamic-import-node"
+  ],
+  "presets": ["@babel/env", "@babel/preset-react"]
+}
