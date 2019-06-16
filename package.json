@@ -9,7 +9,6 @@
     "start": "npx babel-node  dist/index.js",
     "test": "jest --verbose=true --coverage --config=jest.config.json"
   },
-  "bin": "dist/index.js",
   "files": [
     "dist"
   ],
