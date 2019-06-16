@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "link-module-alias",
     "build": "babel src index.js --out-dir dist",
     "start": "npx babel-node dist/index.js",
     "test": "jest --verbose=true --coverage --config=jest.config.json"
