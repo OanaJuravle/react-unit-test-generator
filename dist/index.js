@@ -1,14 +1,14 @@
 "use strict";
 
-var _generalImports = require("./templates/generalImports");
+var _generalImports = require("./src/templates/generalImports");
 
 var _generalImports2 = _interopRequireDefault(_generalImports);
 
-var _getFiles = require("./getFiles");
+var _getFiles = require("./src/getFiles");
 
 var _getFiles2 = _interopRequireDefault(_getFiles);
 
-var _renderSuiteSchema = require("./templates/renderSuiteSchema");
+var _renderSuiteSchema = require("./src/templates/renderSuiteSchema");
 
 var _renderSuiteSchema2 = _interopRequireDefault(_renderSuiteSchema);
 
@@ -42,7 +42,7 @@ fs.appendFile(destinationFile, (0, _renderSuiteSchema2["default"])(componentPath
 });
 
 try {
-  fs.writeFileSync('./testGeneratorWarnings.js', "module.exports = ".concat(JSON.stringify(window.TEST_GENERATOR_WARNINGS)));
+  fs.writeFileSync('./src/testGeneratorWarnings.js', "module.exports = ".concat(JSON.stringify(window.TEST_GENERATOR_WARNINGS)));
   console.log('Added warnings');
 } catch (err) {
   throw err;

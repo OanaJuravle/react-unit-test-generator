@@ -1,7 +1,7 @@
 require('@babel/register');
-import generalImports from './templates/generalImports';
-import getFiles from './getFiles';
-import renderTestSuite from './templates/renderSuiteSchema';
+import generalImports from './src/templates/generalImports';
+import getFiles from './src/getFiles';
+import renderTestSuite from './src/templates/renderSuiteSchema';
 
 const path = require('path');
 const fs = require('fs');
@@ -39,7 +39,7 @@ fs.appendFile(destinationFile, renderTestSuite(componentPath), err => {
 
 try {
   fs.writeFileSync(
-    './testGeneratorWarnings.js',
+    './src/testGeneratorWarnings.js',
     `module.exports = ${JSON.stringify(window.TEST_GENERATOR_WARNINGS)}`,
   );
   console.log('Added warnings');
