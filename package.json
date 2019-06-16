@@ -6,12 +6,9 @@
   "scripts": {
     "postinstall": "link-module-alias",
     "build": "babel src --out-dir dist",
-    "start": "npx babel-node  dist/index.js",
+    "start": "npx babel-node dist/index.js",
     "test": "jest --verbose=true --coverage --config=jest.config.json"
   },
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OanaJuravle/react-unit-test-generator.git"

@@ -11,12 +11,13 @@ window.TEST_GENERATOR_WARNINGS = [];
 var fileName = process.argv[2];
 const matchedFiles = [];
 
-const projectEntry = 'D:\\LicentaFinal\\app';
+const projectEntry = 'D:\\GitHub\\react-app';
 console.log(projectEntry);
 
 // // TODO: decide whether or not I should use src here - maybe ask for entry point?
 const files = getFiles(`${projectEntry}\\src`, matchedFiles, fileName);
 console.log('matchedFiles', matchedFiles);
+global.console.log('MATCHED FILES', matchedFiles);
 
 const componentPath = files[0];
 const destination = componentPath
@@ -38,7 +39,7 @@ fs.appendFile(destinationFile, renderTestSuite(componentPath), err => {
 
 try {
   fs.writeFileSync(
-    '../../app/testGenerator/testGeneratorWarnings.js',
+    './testGeneratorWarnings.js',
     `module.exports = ${JSON.stringify(window.TEST_GENERATOR_WARNINGS)}`,
   );
   console.log('Added warnings');
