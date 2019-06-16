@@ -1,25 +1,28 @@
-import "jsdom-global/register";
-import "@babel/polyfill";
-import React from "react";
-import TestRenderer from "react-test-renderer";
-import { MemoryRouter } from "react-router-dom";
-import { cloneDeep, isEmpty } from "lodash";
-import testRender from "./render/testRender";
-import testRenderWithDefaultProps from "./render/testRenderWithDefaultProps";
-import testButtonsBehaviour from "./buttons/testButtonsBehaviour";
-import testAnchorsBehaviour from "./anchors/testAnchorsBehaviour";
-import validateForm from "./forms/validateForm";
-import createIdentifiersMap from "../createIdentifiersMap";
-import { formatTemplateProps } from "../helpers/formatProps";
-import mountReactComponent from "../helpers/mountReactComponent";
+import 'jsdom-global/register';
+import '@babel/polyfill';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import TestRenderer from 'react-test-renderer';
+import { MemoryRouter } from 'react-router-dom';
+import { cloneDeep, isEmpty } from 'lodash';
+import testRender from './render/testRender';
+import testRenderWithDefaultProps from './render/testRenderWithDefaultProps';
+import testButtonsBehaviour from './buttons/testButtonsBehaviour';
+import testAnchorsBehaviour from './anchors/testAnchorsBehaviour';
+import validateForm from './forms/validateForm';
+import createIdentifiersMap from '../createIdentifiersMap';
+import { formatTemplateProps } from '../helpers/formatProps';
+import mountReactComponent from '../helpers/mountReactComponent';
 
 function createTree(Component, props) {
   const testRenderer = TestRenderer.create(
     <MemoryRouter>
       <Component {...props} />
-    </MemoryRouter>
+    </MemoryRouter>,
   );
   const testRendererTree = testRenderer.toTree();
+
+  console.log('testRendererTree', testRendererTree);
 
   let testComponent = testRendererTree.rendered;
   while (testComponent.type.name !== Component.name) {
@@ -48,27 +51,13 @@ function setTestProps(initialTestProps = {}, defaultProps = {}) {
       return initialTestProps;
     }
   }
-  return cloneDeep(
-    Object.assign(cloneDeep(defaultProps), cloneDeep(initialTestProps))
-  );
+  return cloneDeep(Object.assign(cloneDeep(defaultProps), cloneDeep(initialTestProps)));
 }
 
-function testFormFields(
-  component,
-  testRendererInstance,
-  testProps,
-  templateProps,
-  identifiers
-) {
+function testFormFields(component, testRendererInstance, testProps, templateProps, identifiers) {
   return identifiers.form.fields.length > 0
-    ? validateForm(
-        component,
-        testRendererInstance,
-        testProps,
-        templateProps,
-        identifiers
-      )
-    : "";
+    ? validateForm(component, testRendererInstance, testProps, templateProps, identifiers)
+    : '';
 }
 
 function testDefaultProps(componentDefaultProps, defaultTestProps) {
@@ -76,26 +65,19 @@ function testDefaultProps(componentDefaultProps, defaultTestProps) {
     const defaultTemplateProps = formatTemplateProps(defaultTestProps);
     return testRenderWithDefaultProps(defaultTemplateProps);
   }
-  return "";
+  return '';
 }
 
 export default function renderTestSuite(componentPath) {
-  const Component = require(componentPath).default;
+  console.log('-------------');
+  const Component = require(componentPath);
+  console.log('COMPONENT', Component);
 
-  const defaultTestProps = setDefaultTestProps(
-    Component.testProps,
-    Component.defaultProps
-  );
-  const definedTestProps = setTestProps(
-    Component.testProps,
-    Component.defaultProps
-  );
-  const templateProps = formatTemplateProps(definedTestProps) || "";
+  const defaultTestProps = setDefaultTestProps(Component.testProps, Component.defaultProps);
+  const definedTestProps = setTestProps(Component.testProps, Component.defaultProps);
+  const templateProps = formatTemplateProps(definedTestProps) || '';
 
-  const { testRendererJSON, testRendererInstance } = createTree(
-    Component,
-    definedTestProps
-  );
+  const { testRendererJSON, testRendererInstance } = createTree(Component, definedTestProps);
   const identifiers = createIdentifiersMap(testRendererJSON, componentPath);
   const component = mountReactComponent(Component, definedTestProps);
 
@@ -114,6 +96,16 @@ describe('Automated Generated Tests', () => {
         </MemoryRouter>
       ).find('${Component.name}');
     });
+    ${testRender()}
+    ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
+    ${testAnchorsBehaviour(identifiers)}
+    ${testFormFields(
+      component,
+      testRendererInstance,
+      definedTestProps,
+      formatTemplateProps(defaultTestProps),
+      identifiers,
+    )}
   });
 });
 `;
