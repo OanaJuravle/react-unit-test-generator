@@ -1,25 +1,23 @@
-require('@babel/register');
-import generalImports from './src/templates/generalImports';
-import getFiles from './src/getFiles';
-import renderTestSuite from './src/templates/renderSuiteSchema';
-
+// require('@babel/register');
+// import generalImports from './templates/generalImports';
+import getFiles from './getFiles';
+// // import renderTestSuite from './templates/renderSuiteSchema';
 const path = require('path');
 const fs = require('fs');
 
-window.TEST_GENERATOR_WARNINGS = [];
-
-exports.generateTests = function(fileName) {
-  console.log('**** From Package ****');
-  const projectEntry = 'D:\\GitHub\\react-app';
-  const packageName = process.env.npm_package_name;
-  console.log('packageName', packageName);
-  console.log('PROCESS', process);
+export function generateTests() {
+  console.log('**** From Package ---- ****');
+  const rootDir = path.resolve(__dirname, './src');
+  console.log('rootDir', rootDir);
 
   const matchedFiles = [];
+  const files = getFiles(rootDir, matchedFiles, 'UsersIndex');
+  console.log(files);
+}
 
-  const files = getFiles(`${projectEntry}\\src`, matchedFiles, fileName);
-  console.log('matchedFiles', matchedFiles);
-};
+// module.exports = { generateTests };
+
+// window.TEST_GENERATOR_WARNINGS = [];
 
 // var fileName = process.argv[2];
 // const matchedFiles = [];
@@ -52,7 +50,7 @@ exports.generateTests = function(fileName) {
 
 // try {
 //   fs.writeFileSync(
-//     './src/testGeneratorWarnings.js',
+//     './testGeneratorWarnings.js',
 //     `module.exports = ${JSON.stringify(window.TEST_GENERATOR_WARNINGS)}`,
 //   );
 //   console.log('Added warnings');
