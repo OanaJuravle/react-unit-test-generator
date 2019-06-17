@@ -1,15 +1,25 @@
-exports.generateTests = function() {
+require('@babel/register');
+import generalImports from './src/templates/generalImports';
+import getFiles from './src/getFiles';
+import renderTestSuite from './src/templates/renderSuiteSchema';
+
+const path = require('path');
+const fs = require('fs');
+
+window.TEST_GENERATOR_WARNINGS = [];
+
+exports.generateTests = function(fileName) {
   console.log('**** From Package ****');
+  const projectEntry = 'D:\\GitHub\\react-app';
+  const packageName = process.env.npm_package_name;
+  console.log('packageName', packageName);
+  console.log('PROCESS', process);
+
+  const matchedFiles = [];
+
+  const files = getFiles(`${projectEntry}\\src`, matchedFiles, fileName);
+  console.log('matchedFiles', matchedFiles);
 };
-// require('@babel/register');
-// import generalImports from './src/templates/generalImports';
-// import getFiles from './src/getFiles';
-// import renderTestSuite from './src/templates/renderSuiteSchema';
-
-// const path = require('path');
-// const fs = require('fs');
-
-// window.TEST_GENERATOR_WARNINGS = [];
 
 // var fileName = process.argv[2];
 // const matchedFiles = [];
