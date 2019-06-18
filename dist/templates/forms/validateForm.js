@@ -5,31 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = validateForm;
 
-var _testValidForm = require("./testValidForm");
+var _testValidForm = _interopRequireDefault(require("./testValidForm"));
 
-var _testValidForm2 = _interopRequireDefault(_testValidForm);
+var _testInvalidForm = _interopRequireDefault(require("./testInvalidForm"));
 
-var _testInvalidForm = require("./testInvalidForm");
+var _mockMethod = _interopRequireDefault(require("../../helpers/mockMethod"));
 
-var _testInvalidForm2 = _interopRequireDefault(_testInvalidForm);
+var _getMethodMockName = _interopRequireDefault(require("../../helpers/getMethodMockName"));
 
-var _mockMethod = require("../../helpers/mockMethod");
-
-var _mockMethod2 = _interopRequireDefault(_mockMethod);
-
-var _getMethodMockName = require("../../helpers/getMethodMockName");
-
-var _getMethodMockName2 = _interopRequireDefault(_getMethodMockName);
-
-var _mountComponent = require("../mountComponent");
-
-var _mountComponent2 = _interopRequireDefault(_mountComponent);
+var _mountComponent = _interopRequireDefault(require("../mountComponent"));
 
 var _warnings = require("../warnings");
 
-var _mountReactComponentWithMocks = require("../../helpers/mountReactComponentWithMocks");
-
-var _mountReactComponentWithMocks2 = _interopRequireDefault(_mountReactComponentWithMocks);
+var _mountReactComponentWithMocks = _interopRequireDefault(require("../../helpers/mountReactComponentWithMocks"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -53,8 +41,8 @@ function validateForm(component, testRendererInstance, testProps, templateProps,
     var hasRequiredFields = identifiers.form.fields.some(function (field) {
       return field.required;
     });
-    var mockFunction = (0, _getMethodMockName2["default"])(boundedMethod);
-    return "\n      describe('Form validation', () => {\n        let field;\n        ".concat(isInstanceMethod ? 'let spy;' : "let ".concat(mockFunction), "\n        beforeEach(() => {\n          ").concat(isInstanceMethod ? (0, _mockMethod2["default"])(boundedMethod, isInstanceMethod) : "".concat(mockFunction, " = jest.fn();"), "\n          ").concat(isInstanceMethod ? (0, _mountComponent2["default"])(templateProps) : (0, _mountReactComponentWithMocks2["default"])(testProps, boundedMethod), "\n        });\n        \n        afterEach(() => {    \n          jest.clearAllMocks();\n        });\n        ").concat((0, _testValidForm2["default"])(submitButtonIdentifier, isInstanceMethod ? boundedMethod : mockFunction, testProps, isInstanceMethod, identifiers), "\n        ").concat(hasRequiredFields ? (0, _testInvalidForm2["default"])(submitButtonIdentifier, isInstanceMethod ? boundedMethod : mockFunction, testProps, isInstanceMethod, identifiers) : '', "\n      });");
+    var mockFunction = (0, _getMethodMockName["default"])(boundedMethod);
+    return "\n      describe('Form validation', () => {\n        let field;\n        ".concat(isInstanceMethod ? 'let spy;' : "let ".concat(mockFunction), "\n        beforeEach(() => {\n          ").concat(isInstanceMethod ? (0, _mockMethod["default"])(boundedMethod, isInstanceMethod) : "".concat(mockFunction, " = jest.fn();"), "\n          ").concat(isInstanceMethod ? (0, _mountComponent["default"])(templateProps) : (0, _mountReactComponentWithMocks["default"])(testProps, boundedMethod), "\n        });\n        \n        afterEach(() => {    \n          jest.clearAllMocks();\n        });\n        ").concat((0, _testValidForm["default"])(submitButtonIdentifier, isInstanceMethod ? boundedMethod : mockFunction, testProps, isInstanceMethod, identifiers), "\n        ").concat(hasRequiredFields ? (0, _testInvalidForm["default"])(submitButtonIdentifier, isInstanceMethod ? boundedMethod : mockFunction, testProps, isInstanceMethod, identifiers) : '', "\n      });");
   }
 
   return '';

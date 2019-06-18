@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = testRedirectToUrl;
 
-var _clickButton = require("../../helpers/clickButton");
-
-var _clickButton2 = _interopRequireDefault(_clickButton);
+var _clickButton = _interopRequireDefault(require("../../helpers/clickButton"));
 
 var _warnings = require("../warnings");
 
@@ -18,5 +16,5 @@ function testRedirectToUrl(element) {
     return (0, _warnings.noIdentifierSpecified)(element);
   }
 
-  return "\n  it('redirects to \"".concat(element.redirectTo, "\" on \"").concat(element.label, "\" button click', () => {\n    window.history.pushState({}, '', '").concat(element.redirectTo, "');\n    ").concat((0, _clickButton2["default"])(element.identifier), "\n    component.update();\n    expect(window.location.href).toContain('").concat(element.redirectTo, "');\n  });");
+  return "\n  it('redirects to \"".concat(element.redirectTo, "\" on \"").concat(element.label, "\" button click', () => {\n    window.history.pushState({}, '', '").concat(element.redirectTo, "');\n    ").concat((0, _clickButton["default"])(element.identifier), "\n    component.update();\n    expect(window.location.href).toContain('").concat(element.redirectTo, "');\n  });");
 }

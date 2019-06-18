@@ -16,4 +16,5 @@ function getFiles(dir, fileList, fileName) {
   return fileList;
 }
 
-export default getFiles;
+module.exports = { getFiles };
+// export default getFiles;

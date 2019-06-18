@@ -8,6 +8,10 @@
     "start": "npx babel-node dist/index.js",
     "test": "jest --verbose=true --coverage --config=jest.config.json"
   },
+  "bin": {
+    "react-unit-test-generator": "./src/index.js"
+  },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OanaJuravle/react-unit-test-generator.git"

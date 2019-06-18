@@ -5,21 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = testInstanceMethod;
 
-var _clickButton = require("../../helpers/clickButton");
+var _clickButton = _interopRequireDefault(require("../../helpers/clickButton"));
 
-var _clickButton2 = _interopRequireDefault(_clickButton);
+var _checkForStateUpdate = _interopRequireDefault(require("../../helpers/checkForStateUpdate"));
 
-var _checkForStateUpdate = require("../../helpers/checkForStateUpdate");
+var _mockMethod = _interopRequireDefault(require("../../helpers/mockMethod"));
 
-var _checkForStateUpdate2 = _interopRequireDefault(_checkForStateUpdate);
-
-var _mockMethod = require("../../helpers/mockMethod");
-
-var _mockMethod2 = _interopRequireDefault(_mockMethod);
-
-var _mountComponent = require("../mountComponent");
-
-var _mountComponent2 = _interopRequireDefault(_mountComponent);
+var _mountComponent = _interopRequireDefault(require("../mountComponent"));
 
 var _formatProps = require("../../helpers/formatProps");
 
@@ -31,11 +23,11 @@ function returnAssertion(hasPositiveAssertion) {
 
 function renderTestSuite(testProps, element, method, action, hasPositiveAssertion) {
   var templateProps = (0, _formatProps.formatTemplateProps)(testProps) || '';
-  return "\n\n  it('tests the \"".concat(element.label, "\" button click', () => {\n    let spy;\n    ").concat((0, _mockMethod2["default"])(method, action, true), "\n    ").concat((0, _mountComponent2["default"])(templateProps), "\n    ").concat((0, _clickButton2["default"])(element.identifier, action), "\n    ").concat(returnAssertion(hasPositiveAssertion), "\n    ").concat((0, _checkForStateUpdate2["default"])(), "\n  });");
+  return "\n\n  it('tests the \"".concat(element.label, "\" button click', () => {\n    let spy;\n    ").concat((0, _mockMethod["default"])(method, action, true), "\n    ").concat((0, _mountComponent["default"])(templateProps), "\n    ").concat((0, _clickButton["default"])(element.identifier, action), "\n    ").concat(returnAssertion(hasPositiveAssertion), "\n    ").concat((0, _checkForStateUpdate["default"])(), "\n  });");
 }
 
 function renderTestDescription(element, method, action, hasPositiveAssertion) {
-  return "\n  ".concat((0, _clickButton2["default"])(element.identifier, action), "\n  ").concat(returnAssertion(hasPositiveAssertion), "\n  ");
+  return "\n  ".concat((0, _clickButton["default"])(element.identifier, action), "\n  ").concat(returnAssertion(hasPositiveAssertion), "\n  ");
 }
 
 function testInstanceMethod(testProps, element, method, action, hasPositiveAssertion) {

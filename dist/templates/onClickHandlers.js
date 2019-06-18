@@ -5,13 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = onClickHandlers;
 
-var _testPropMethod = require("./buttons/testPropMethod");
+var _testPropMethod = _interopRequireDefault(require("./buttons/testPropMethod"));
 
-var _testPropMethod2 = _interopRequireDefault(_testPropMethod);
-
-var _testInstanceMethod = require("./buttons/testInstanceMethod");
-
-var _testInstanceMethod2 = _interopRequireDefault(_testInstanceMethod);
+var _testInstanceMethod = _interopRequireDefault(require("./buttons/testInstanceMethod"));
 
 var _warnings = require("./warnings");
 
@@ -30,8 +26,8 @@ function onClickHandlers(element, boundedMethod, testProps) {
   }
 
   if (testProps && testProps[boundedMethod]) {
-    return (0, _testPropMethod2["default"])(element, boundedMethod, testProps, action, hasPositiveAssertion);
+    return (0, _testPropMethod["default"])(element, boundedMethod, testProps, action, hasPositiveAssertion);
   }
 
-  return (0, _testInstanceMethod2["default"])(testProps, element, boundedMethod, action, hasPositiveAssertion);
+  return (0, _testInstanceMethod["default"])(testProps, element, boundedMethod, action, hasPositiveAssertion);
 }
