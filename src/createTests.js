@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 // require('@babel/register');
-const { generalImports } = require('./templates/generalImports');
-const { getFiles } = require('./getFiles');
-// const { renderTestSuite } = require('./templates/renderSuiteSchema');
+import generalImports from './templates/generalImports';
+import getFiles from './getFiles';
+import renderTestSuite from './templates/renderSuiteSchema';
 const path = require('path');
 const fs = require('fs');
 
-console.log('**** From Package ---- ****');
+console.log('**** From Package ****');
 const rootDir = path.join(__dirname, '../../react-app');
 console.log('rootDir', rootDir);
 
@@ -42,17 +42,17 @@ fs.writeFile(destinationFile, generalImports(componentPath), err => {
   console.log('Added imports');
 });
 
-// fs.appendFile(destinationFile, renderTestSuite(componentPath), err => {
-//   if (err) throw err;
-//   console.log('Added test suite');
-// });
+fs.appendFile(destinationFile, renderTestSuite(componentPath), err => {
+  if (err) throw err;
+  console.log('Added test suite');
+});
 
-// try {
-//   fs.writeFileSync(
-//     './testGeneratorWarnings.js',
-//     `module.exports = ${JSON.stringify(window.TEST_GENERATOR_WARNINGS)}`,
-//   );
-//   console.log('Added warnings');
-// } catch (err) {
-//   throw err;
-// }
+try {
+  fs.writeFileSync(
+    './testGeneratorWarnings.js',
+    `module.exports = ${JSON.stringify(process.TEST_GENERATOR_WARNINGS)}`,
+  );
+  console.log('Added warnings');
+} catch (err) {
+  throw err;
+}

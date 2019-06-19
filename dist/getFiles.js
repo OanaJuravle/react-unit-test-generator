@@ -1,5 +1,9 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var fs = require('fs');
 
 function getFiles(dir, fileList, fileName) {
@@ -20,6 +24,4 @@ function getFiles(dir, fileList, fileName) {
   return fileList;
 }
 
-module.exports = {
-  getFiles: getFiles
-}; // export default getFiles;
+exports["default"] = getFiles;

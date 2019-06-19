@@ -6,4 +6,4 @@ import Component from '${componentPath}';
   `;
 }
 
-module.exports = { generalImports };
+export default generalImports;

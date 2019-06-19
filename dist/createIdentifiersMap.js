@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -122,5 +121,4 @@ function createIdentifiersMap(tree) {
   return identifiers;
 }
 
-var _default = createIdentifiersMap;
-exports["default"] = _default;
+exports["default"] = createIdentifiersMap;

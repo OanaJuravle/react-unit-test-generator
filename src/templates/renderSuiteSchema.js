@@ -13,7 +13,9 @@ import validateForm from './forms/validateForm';
 import createIdentifiersMap from '../createIdentifiersMap';
 import { formatTemplateProps } from '../helpers/formatProps';
 import mountReactComponent from '../helpers/mountReactComponent';
+// import UsersIndex from '../../../react-app/src/components/users/Users/UsersIndex.js';
 
+const fs = require('fs');
 // function createTree(Component, props) {
 //   const testRenderer = TestRenderer.create(
 //     <MemoryRouter>
@@ -70,7 +72,8 @@ import mountReactComponent from '../helpers/mountReactComponent';
 
 function renderTestSuite(componentPath) {
   console.log('-------------');
-  const Component = require(componentPath);
+  let Component;
+  Component = require(componentPath);
   console.log('COMPONENT', Component);
 
   //   const defaultTestProps = setDefaultTestProps(Component.testProps, Component.defaultProps);
@@ -111,4 +114,4 @@ function renderTestSuite(componentPath) {
   // `;
 }
 
-module.exports = { renderTestSuite };
+export default renderTestSuite;

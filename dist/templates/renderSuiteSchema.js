@@ -1,38 +1,63 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 require("jsdom-global/register");
 
 require("@babel/polyfill");
 
-var _react = _interopRequireDefault(require("react"));
+var _react = require("react");
 
-var _server = _interopRequireDefault(require("react-dom/server"));
+var _react2 = _interopRequireDefault(_react);
 
-var _reactTestRenderer = _interopRequireDefault(require("react-test-renderer"));
+var _server = require("react-dom/server");
+
+var _server2 = _interopRequireDefault(_server);
+
+var _reactTestRenderer = require("react-test-renderer");
+
+var _reactTestRenderer2 = _interopRequireDefault(_reactTestRenderer);
 
 var _reactRouterDom = require("react-router-dom");
 
 var _lodash = require("lodash");
 
-var _testRender = _interopRequireDefault(require("./render/testRender"));
+var _testRender = require("./render/testRender");
 
-var _testRenderWithDefaultProps = _interopRequireDefault(require("./render/testRenderWithDefaultProps"));
+var _testRender2 = _interopRequireDefault(_testRender);
 
-var _testButtonsBehaviour = _interopRequireDefault(require("./buttons/testButtonsBehaviour"));
+var _testRenderWithDefaultProps = require("./render/testRenderWithDefaultProps");
 
-var _testAnchorsBehaviour = _interopRequireDefault(require("./anchors/testAnchorsBehaviour"));
+var _testRenderWithDefaultProps2 = _interopRequireDefault(_testRenderWithDefaultProps);
 
-var _validateForm = _interopRequireDefault(require("./forms/validateForm"));
+var _testButtonsBehaviour = require("./buttons/testButtonsBehaviour");
 
-var _createIdentifiersMap = _interopRequireDefault(require("../createIdentifiersMap"));
+var _testButtonsBehaviour2 = _interopRequireDefault(_testButtonsBehaviour);
+
+var _testAnchorsBehaviour = require("./anchors/testAnchorsBehaviour");
+
+var _testAnchorsBehaviour2 = _interopRequireDefault(_testAnchorsBehaviour);
+
+var _validateForm = require("./forms/validateForm");
+
+var _validateForm2 = _interopRequireDefault(_validateForm);
+
+var _createIdentifiersMap = require("../createIdentifiersMap");
+
+var _createIdentifiersMap2 = _interopRequireDefault(_createIdentifiersMap);
 
 var _formatProps = require("../helpers/formatProps");
 
-var _mountReactComponent = _interopRequireDefault(require("../helpers/mountReactComponent"));
+var _mountReactComponent = require("../helpers/mountReactComponent");
+
+var _mountReactComponent2 = _interopRequireDefault(_mountReactComponent);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-// function createTree(Component, props) {
+// import UsersIndex from '../../../react-app/src/components/users/Users/UsersIndex.js';
+var fs = require('fs'); // function createTree(Component, props) {
 //   const testRenderer = TestRenderer.create(
 //     <MemoryRouter>
 //       <Component {...props} />
@@ -79,10 +104,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 //   }
 //   return '';
 // }
-function renderTestSuite(componentPath) {
-  console.log('-------------');
 
-  var Component = require(componentPath);
+
+function renderTestSuite(componentPath) {
+  console.log('-------------'); // const testRenderer = TestRenderer.create(
+  //   <MemoryRouter>
+  //     <UsersIndex />
+  //   </MemoryRouter>,
+  // );
+  // const testRendererTree = testRenderer.toTree();
+  // console.log('testRendererTree', testRendererTree);
+
+  var Component;
+  Component = require(componentPath); // try {
+  //   Component = fs.readFileSync(componentPath, 'utf8');
+  //   console.log('READ FILE');
+  // } catch (err) {
+  //   throw err;
+  // }
 
   console.log('COMPONENT', Component); //   const defaultTestProps = setDefaultTestProps(Component.testProps, Component.defaultProps);
   //   const definedTestProps = setTestProps(Component.testProps, Component.defaultProps);
@@ -118,6 +157,4 @@ function renderTestSuite(componentPath) {
   // `;
 }
 
-module.exports = {
-  renderTestSuite: renderTestSuite
-};
+exports["default"] = renderTestSuite;

@@ -2,22 +2,29 @@
 // require('@babel/register');
 "use strict";
 
-var _require = require('./templates/generalImports'),
-    generalImports = _require.generalImports;
+var _generalImports = require("./templates/generalImports");
 
-var _require2 = require('./getFiles'),
-    getFiles = _require2.getFiles; // const { renderTestSuite } = require('./templates/renderSuiteSchema');
+var _generalImports2 = _interopRequireDefault(_generalImports);
 
+var _getFiles = require("./getFiles");
+
+var _getFiles2 = _interopRequireDefault(_getFiles);
+
+var _renderSuiteSchema = require("./templates/renderSuiteSchema");
+
+var _renderSuiteSchema2 = _interopRequireDefault(_renderSuiteSchema);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var path = require('path');
 
 var fs = require('fs');
 
-console.log('**** From Package ---- ****');
+console.log('**** From Package ****');
 var rootDir = path.join(__dirname, '../../react-app');
 console.log('rootDir', rootDir);
 var matchedFiles = [];
-var files = getFiles("".concat(rootDir, "/src"), matchedFiles, 'UsersIndex');
+var files = (0, _getFiles2["default"])("".concat(rootDir, "/src"), matchedFiles, 'UsersIndex');
 console.log(files);
 process.TEST_GENERATOR_WARNINGS = []; // var fileName = process.argv[2];
 // const matchedFiles = [];
@@ -32,19 +39,18 @@ var componentPath = files[0];
 var destination = componentPath.split('/').slice(-1)[0].split('.')[0];
 var destinationFile = "".concat(rootDir, "/tests/").concat(destination, ".test.js");
 console.log('destinationFile', destinationFile);
-fs.writeFile(destinationFile, generalImports(componentPath), function (err) {
+fs.writeFile(destinationFile, (0, _generalImports2["default"])(componentPath), function (err) {
   if (err) throw err;
   console.log('Added imports');
-}); // fs.appendFile(destinationFile, renderTestSuite(componentPath), err => {
-//   if (err) throw err;
-//   console.log('Added test suite');
-// });
-// try {
-//   fs.writeFileSync(
-//     './testGeneratorWarnings.js',
-//     `module.exports = ${JSON.stringify(window.TEST_GENERATOR_WARNINGS)}`,
-//   );
-//   console.log('Added warnings');
-// } catch (err) {
-//   throw err;
-// }
+});
+fs.appendFile(destinationFile, (0, _renderSuiteSchema2["default"])(componentPath), function (err) {
+  if (err) throw err;
+  console.log('Added test suite');
+});
+
+try {
+  fs.writeFileSync('./testGeneratorWarnings.js', "module.exports = ".concat(JSON.stringify(process.TEST_GENERATOR_WARNINGS)));
+  console.log('Added warnings');
+} catch (err) {
+  throw err;
+}
