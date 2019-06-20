@@ -77,37 +77,37 @@ function renderTestSuite(componentPath) {
   const templateProps = formatTemplateProps(definedTestProps) || '';
 
   const { testRendererJSON, testRendererInstance } = createTree(Component, definedTestProps);
-  //   const identifiers = createIdentifiersMap(testRendererJSON, componentPath);
-  //   const component = mountReactComponent(Component, definedTestProps);
+  const identifiers = createIdentifiersMap(testRendererJSON, componentPath);
+  const component = mountReactComponent(Component, definedTestProps);
 
-  //   const buttonIdentifiers = identifiers.buttons;
+  const buttonIdentifiers = identifiers.buttons;
 
-  //   return `
-  // describe('Automated Generated Tests', () => {
-  //   let component;
-  //   ${testDefaultProps(Component.defaultProps, defaultTestProps)}
+  return `
+  describe('Automated Generated Tests', () => {
+    let component;
+    ${testDefaultProps(Component.defaultProps, defaultTestProps)}
 
-  //   describe('With custom props', () => {
-  //     beforeEach(() => {
-  //       component = mount(
-  //         <MemoryRouter>
-  //           <Component ${templateProps} />
-  //         </MemoryRouter>
-  //       ).find('${Component.name}');
-  //     });
-  //     ${testRender()}
-  //     ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
-  //     ${testAnchorsBehaviour(identifiers)}
-  //     ${testFormFields(
-  //       component,
-  //       testRendererInstance,
-  //       definedTestProps,
-  //       formatTemplateProps(defaultTestProps),
-  //       identifiers,
-  //     )}
-  //   });
-  // });
-  // `;
+    describe('With custom props', () => {
+      beforeEach(() => {
+        component = mount(
+          <MemoryRouter>
+            <Component ${templateProps} />
+          </MemoryRouter>
+        ).find('${Component.name}');
+      });
+      ${testRender()}
+      ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
+      ${testAnchorsBehaviour(identifiers)}
+      ${testFormFields(
+        component,
+        testRendererInstance,
+        definedTestProps,
+        formatTemplateProps(defaultTestProps),
+        identifiers,
+      )}
+    });
+  });
+  `;
 }
 
 export default renderTestSuite;

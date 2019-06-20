@@ -14,6 +14,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = require("react-router-dom");
 
+var _redux = require("redux");
+
+var _reactRedux = require("react-redux");
+
 var _reactTestRenderer = require("react-test-renderer");
 
 var _reactTestRenderer2 = _interopRequireDefault(_reactTestRenderer);
@@ -53,7 +57,11 @@ var _mountReactComponent2 = _interopRequireDefault(_mountReactComponent);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function createTree(Component, props) {
-  var testRenderer = _reactTestRenderer2["default"].create(_react2["default"].createElement(_reactRouterDom.MemoryRouter, null, _react2["default"].createElement(Component, props)));
+  var store = (0, _redux.createStore)(function () {});
+
+  var testRenderer = _reactTestRenderer2["default"].create(_react2["default"].createElement(_reactRedux.Provider, {
+    store: store
+  }, _react2["default"].createElement(_reactRouterDom.MemoryRouter, null, _react2["default"].createElement(Component, props))));
 
   var testRendererTree = testRenderer.toTree();
   console.log('testRendererTree', testRendererTree);
@@ -113,7 +121,7 @@ function testDefaultProps(componentDefaultProps, defaultTestProps) {
 function renderTestSuite(componentPath) {
   console.log('-------------');
 
-  var Component = require(componentPath);
+  var Component = require(componentPath)["default"];
 
   console.log('COMPONENT', Component);
   var defaultTestProps = setDefaultTestProps(Component.testProps, Component.defaultProps);
