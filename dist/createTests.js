@@ -49,7 +49,7 @@ if (matchedFiles.length === 0) {
 process.TEST_GENERATOR_WARNINGS = [];
 matchedFiles.forEach(function (componentPath) {
   var destination = componentPath.split('/').slice(-1)[0].split('.')[0];
-  var relativePath = path.relative(path.join("../../".concat(packageName), "../../../../".concat(packageName, "/tests")), componentPath).replace(/\\/g, '/');
+  var relativePath = path.relative(path.resolve(packageName, "../../".concat(packageName, "/tests")), componentPath).replace(/\\/g, '/');
 
   var Component = require(componentPath)["default"];
 
