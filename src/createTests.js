@@ -17,7 +17,7 @@ if (!fileName) {
 }
 
 const packageName = process.env.npm_package_name;
-const rootDir = path.join(__dirname, `../../${packageName}`);
+const rootDir = path.join(__dirname, `../../../../${packageName}`);
 console.log('rootDir', rootDir);
 
 let matchedFiles = [];
@@ -42,7 +42,7 @@ matchedFiles.forEach(componentPath => {
     .split('.')[0];
 
   const relativePath = path
-    .relative(path.join(packageName, `../../${packageName}/tests`), componentPath)
+    .relative(path.join(packageName, `../../../../${packageName}/tests`), componentPath)
     .replace(/\\/g, '/');
 
   const Component = require(componentPath).default;
