@@ -31,7 +31,7 @@ if (!fileName) {
 }
 
 var packageName = process.env.npm_package_name;
-var rootDir = path.join(__dirname, "../../".concat(packageName));
+var rootDir = path.join(__dirname, "../../../../".concat(packageName));
 console.log('rootDir', rootDir);
 var matchedFiles = [];
 matchedFiles = (0, _getFiles2["default"])("".concat(rootDir, "/src"), matchedFiles, fileName);
@@ -49,7 +49,7 @@ if (matchedFiles.length === 0) {
 process.TEST_GENERATOR_WARNINGS = [];
 matchedFiles.forEach(function (componentPath) {
   var destination = componentPath.split('/').slice(-1)[0].split('.')[0];
-  var relativePath = path.relative(path.join(packageName, "../../".concat(packageName, "/tests")), componentPath).replace(/\\/g, '/');
+  var relativePath = path.relative(path.join(packageName, "../../../../".concat(packageName, "/tests")), componentPath).replace(/\\/g, '/');
 
   var Component = require(componentPath)["default"];
 

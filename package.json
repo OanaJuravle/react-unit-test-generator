@@ -2,7 +2,7 @@
   "name": "react-unit-test-generator",
   "version": "1.4.0",
   "description": "",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
@@ -11,7 +11,7 @@
     "test": "jest --verbose=true --coverage --config=jest.config.json"
   },
   "bin": {
-    "react-unit-test-generator": "./src/index.js"
+    "react-unit-test-generator": "./dist/index.js"
   },
   "repository": {
     "type": "git",
