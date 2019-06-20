@@ -13,10 +13,6 @@ export default function onClickHandlers(
     return noIdentifierSpecified(element);
   }
 
-  if (boundedMethod === 'onClick') {
-    return noInlineMethods(element);
-  }
-
   if (testProps && testProps[boundedMethod]) {
     return testPropMethod(element, boundedMethod, testProps, action, hasPositiveAssertion);
   }

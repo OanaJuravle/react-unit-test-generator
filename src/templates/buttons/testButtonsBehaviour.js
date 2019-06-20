@@ -1,5 +1,6 @@
 import onClickHandlers from '../onClickHandlers';
 import testRedirectToUrl from './testRedirectToUrl';
+import { noInlineMethods } from '../warnings';
 
 export default function testButtonsBehaviours(
   component,
@@ -20,6 +21,10 @@ export default function testButtonsBehaviours(
       }
 
       boundedMethod = boundedMethod.name.split(' ').slice(-1)[0];
+
+      if (boundedMethod === 'onClick') {
+        return noInlineMethods(element);
+      }
 
       if (testRendererInstance[boundedMethod] || testRendererInstance.props[boundedMethod]) {
         return onClickHandlers(element, boundedMethod, testProps, 'click', true);

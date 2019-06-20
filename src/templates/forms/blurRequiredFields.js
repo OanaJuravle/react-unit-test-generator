@@ -6,7 +6,7 @@ export default function blurRequiredFields(identifiers) {
           .map(field => {
             if (field.required) {
               return `
-    field = component.find('[data-testid="${field.identifier}"]').hostNodes();
+    field = component.find('[data-testid="${field.identifier}"]').last();
     field.simulate('focus');
     field.simulate('blur');
                   `;

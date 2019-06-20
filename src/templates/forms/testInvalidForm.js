@@ -1,21 +1,22 @@
-import testInstanceMethod from '../buttons/testInstanceMethod';
-import testPropMethod from '../buttons/testPropMethod';
 import blurRequiredFields from './blurRequiredFields';
 
-export default function testInvalidForm(
-  submitButtonIdentifier,
-  boundedMethod,
-  testProps,
-  isInstanceMethod,
-  identifiers,
-) {
+function checkFormIsInvalid(submitButtonIdentifier) {
+  if (submitButtonIdentifier.disabled === true) {
+    return `
+    const button = component.find('button[data-testid="${submitButtonIdentifier.identifier}"]');
+    expect(button.props().disabled).toBeTruthy();`;
+  }
+  return checkForErrors();
+}
+
+function checkForErrors() {
+  return `expect(component.find(form).find('.error').length).toBeGreaterThanOrEqual(1)`;
+}
+
+export default function testInvalidForm(submitButtonIdentifier, identifiers) {
   return `
   it('tests Form Fields - failure', () => {
     ${blurRequiredFields(identifiers)}
-    ${
-      isInstanceMethod
-        ? testInstanceMethod(testProps, submitButtonIdentifier, boundedMethod, 'submit', false)
-        : testPropMethod(submitButtonIdentifier, boundedMethod, testProps, 'submit', false)
-    }
+    ${checkFormIsInvalid(submitButtonIdentifier)}
   });`;
 }

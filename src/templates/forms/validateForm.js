@@ -5,6 +5,7 @@ import getMethodMockName from '../../helpers/getMethodMockName';
 import mountComponent from '../mountComponent';
 import { noFormIdentifierSpecified } from '../warnings';
 import mountReactComponentWithMocks from '../../helpers/mountReactComponentWithMocks';
+import { noInlineMethods } from '../warnings';
 
 export default function validateForm(
   component,
@@ -25,6 +26,10 @@ export default function validateForm(
   }
 
   boundedMethod = boundedMethod.name.split(' ').slice(-1)[0];
+
+  if (boundedMethod === 'onSubmit') {
+    return noInlineMethods(submitButtonIdentifier);
+  }
 
   if (testRendererInstance[boundedMethod] || testRendererInstance.props[boundedMethod]) {
     const isInstanceMethod = !(testProps && testProps[boundedMethod]);
@@ -58,17 +63,7 @@ export default function validateForm(
           isInstanceMethod,
           identifiers,
         )}
-        ${
-          hasRequiredFields
-            ? testInvalidForm(
-                submitButtonIdentifier,
-                isInstanceMethod ? boundedMethod : mockFunction,
-                testProps,
-                isInstanceMethod,
-                identifiers,
-              )
-            : ''
-        }
+        ${hasRequiredFields ? testInvalidForm(submitButtonIdentifier, identifiers) : ''}
       });`;
   }
   return '';

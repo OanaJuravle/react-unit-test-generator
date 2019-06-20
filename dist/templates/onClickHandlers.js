@@ -25,10 +25,6 @@ function onClickHandlers(element, boundedMethod, testProps) {
     return (0, _warnings.noIdentifierSpecified)(element);
   }
 
-  if (boundedMethod === 'onClick') {
-    return (0, _warnings.noInlineMethods)(element);
-  }
-
   if (testProps && testProps[boundedMethod]) {
     return (0, _testPropMethod2["default"])(element, boundedMethod, testProps, action, hasPositiveAssertion);
   }

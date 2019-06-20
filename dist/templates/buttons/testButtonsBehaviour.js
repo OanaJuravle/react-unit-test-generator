@@ -13,6 +13,8 @@ var _testRedirectToUrl = require("./testRedirectToUrl");
 
 var _testRedirectToUrl2 = _interopRequireDefault(_testRedirectToUrl);
 
+var _warnings = require("../warnings");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function testButtonsBehaviours(component, testRendererInstance, testProps, buttonIdentifiers) {
@@ -29,6 +31,10 @@ function testButtonsBehaviours(component, testRendererInstance, testProps, butto
     }
 
     boundedMethod = boundedMethod.name.split(' ').slice(-1)[0];
+
+    if (boundedMethod === 'onClick') {
+      return (0, _warnings.noInlineMethods)(element);
+    }
 
     if (testRendererInstance[boundedMethod] || testRendererInstance.props[boundedMethod]) {
       return (0, _onClickHandlers2["default"])(element, boundedMethod, testProps, 'click', true);
