@@ -42,7 +42,7 @@ matchedFiles.forEach(componentPath => {
     .split('.')[0];
 
   const relativePath = path
-    .relative(path.join(packageName, `../../../../${packageName}/tests`), componentPath)
+    .relative(path.join(`/../../${packageName}`, `../../../../${packageName}/tests`), componentPath)
     .replace(/\\/g, '/');
 
   const Component = require(componentPath).default;
