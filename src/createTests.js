@@ -1,6 +1,3 @@
-#!/usr/bin/env node
-
-// require('@babel/register');
 import generalImports from './templates/generalImports';
 import getFiles from './getFiles';
 import renderTestSuite from './templates/renderSuiteSchema';
@@ -8,51 +5,99 @@ const path = require('path');
 const fs = require('fs');
 
 console.log('**** From Package ****');
-const rootDir = path.join(__dirname, '../../react-app');
+var fileName = process.env.npm_config_fileName;
+
+if (!fileName) {
+  try {
+    throw new Error('Original Error');
+  } catch (err) {
+    err.message = `No file provided`;
+    throw err.message;
+  }
+}
+
+const packageName = process.env.npm_package_name;
+const rootDir = path.join(__dirname, `../../${packageName}`);
 console.log('rootDir', rootDir);
 
-const matchedFiles = [];
-const files = getFiles(`${rootDir}/src`, matchedFiles, 'UsersIndex');
-console.log(files);
+let matchedFiles = [];
+matchedFiles = getFiles(`${rootDir}/src`, matchedFiles, fileName);
+console.log(matchedFiles);
+
+if (matchedFiles.length === 0) {
+  try {
+    throw new Error('Original Error');
+  } catch (err) {
+    err.message = `Unable to find any file match for ${fileName}`;
+    throw err.message;
+  }
+}
 
 process.TEST_GENERATOR_WARNINGS = [];
 
-// var fileName = process.argv[2];
-// const matchedFiles = [];
+matchedFiles.forEach(componentPath => {
+  const destination = componentPath
+    .split('/')
+    .slice(-1)[0]
+    .split('.')[0];
 
-// const projectEntry = 'D:\\GitHub\\react-app';
-// console.log(projectEntry);
+  const relativePath = path
+    .relative(path.join(packageName, `../../${packageName}/tests`), componentPath)
+    .replace(/\\/g, '/');
 
-// // // TODO: decide whether or not I should use src here - maybe ask for entry point?
-// const files = getFiles(`${projectEntry}\\src`, matchedFiles, fileName);
-// console.log('matchedFiles', matchedFiles);
-// global.console.log('MATCHED FILES', matchedFiles);
+  const Component = require(componentPath).default;
+  if (!Component || !Component.name) {
+    try {
+      throw new Error('Original Error');
+    } catch (err) {
+      err.message = `The file ${fileName} does not export a component`;
+      throw err.message;
+    }
+  }
 
-const componentPath = files[0];
-const destination = componentPath
-  .split('/')
-  .slice(-1)[0]
-  .split('.')[0];
+  try {
+    fs.accessSync(componentPath, fs.constants.R_OK);
+  } catch (err) {
+    console.log(`${destination} is not readable`);
+  }
 
-const destinationFile = `${rootDir}/tests/${destination}.test.js`;
-console.log('destinationFile', destinationFile);
+  try {
+    fs.accessSync(componentPath, fs.constants.W_OK);
+  } catch (err) {
+    console.log(`${destination} is not writable`);
+  }
 
-fs.writeFile(destinationFile, generalImports(componentPath), err => {
-  if (err) throw err;
-  console.log('Added imports');
+  console.log('Generating unit tests for ' + destination + '\n');
+
+  const destinationFile = `${rootDir}/tests/${destination}.test.js`;
+  console.log('Destination File: ', destinationFile);
+
+  try {
+    console.log('Adding imports...');
+    fs.writeFileSync(destinationFile, generalImports(relativePath));
+    console.log('Done!\n');
+  } catch (err) {
+    throw err;
+  }
+
+  try {
+    console.log('Adding test suite...');
+    fs.appendFileSync(destinationFile, renderTestSuite(componentPath));
+    console.log('Done!\n');
+  } catch (err) {
+    throw err;
+  }
+
+  try {
+    if (process.TEST_GENERATOR_WARNINGS.length > 0) {
+      console.log('Adding warnings...');
+      fs.writeFileSync(
+        path.resolve(__dirname, './testGeneratorWarnings.js'),
+        `module.exports = ${JSON.stringify(process.TEST_GENERATOR_WARNINGS)}`,
+      );
+      console.log('Done!\n');
+    }
+  } catch (err) {
+    throw err;
+  }
 });
-
-fs.appendFile(destinationFile, renderTestSuite(componentPath), err => {
-  if (err) throw err;
-  console.log('Added test suite');
-});
-
-try {
-  fs.writeFileSync(
-    './testGeneratorWarnings.js',
-    `module.exports = ${JSON.stringify(process.TEST_GENERATOR_WARNINGS)}`,
-  );
-  console.log('Added warnings');
-} catch (err) {
-  throw err;
-}

@@ -1,8 +1,8 @@
 import 'jsdom-global/register';
 import '@babel/polyfill';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import TestRenderer from 'react-test-renderer';
+import { MemoryRouter } from 'react-router-dom';
 import { cloneDeep, isEmpty } from 'lodash';
 import testRender from './render/testRender';
 import testRenderWithDefaultProps from './render/testRenderWithDefaultProps';
@@ -20,8 +20,6 @@ function createTree(Component, props) {
     </MemoryRouter>,
   );
   const testRendererTree = testRenderer.toTree();
-
-  console.log('testRendererTree', testRendererTree);
 
   let testComponent = testRendererTree.rendered;
   while (testComponent.type.name !== Component.name) {
@@ -67,47 +65,53 @@ function testDefaultProps(componentDefaultProps, defaultTestProps) {
   return '';
 }
 
-function renderTestSuite(componentPath) {
-  console.log('-------------');
+export default function renderTestSuite(componentPath) {
   const Component = require(componentPath).default;
-  console.log('COMPONENT', Component);
 
   const defaultTestProps = setDefaultTestProps(Component.testProps, Component.defaultProps);
   const definedTestProps = setTestProps(Component.testProps, Component.defaultProps);
   const templateProps = formatTemplateProps(definedTestProps) || '';
 
   const { testRendererJSON, testRendererInstance } = createTree(Component, definedTestProps);
+
+  if (!testRendererJSON) {
+    try {
+      throw new Error('Original Error');
+    } catch (err) {
+      err.message = `Unable to create the identifiers tree for ${Component.name}`;
+      throw err.message;
+    }
+  }
+
   const identifiers = createIdentifiersMap(testRendererJSON, componentPath);
   const component = mountReactComponent(Component, definedTestProps);
 
   const buttonIdentifiers = identifiers.buttons;
 
   return `
-  describe('Automated Generated Tests', () => {
-    let component;
-    ${testDefaultProps(Component.defaultProps, defaultTestProps)}
+describe('Automated Generated Tests', () => {
+  let component;
+  ${testDefaultProps(Component.defaultProps, defaultTestProps)}
 
-    describe('With custom props', () => {
-      beforeEach(() => {
-        component = mount(
-          <MemoryRouter>
-            <Component ${templateProps} />
-          </MemoryRouter>
-        ).find('${Component.name}');
-      });
-      ${testRender()}
-      ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
-      ${testAnchorsBehaviour(identifiers)}
-      ${testFormFields(
-        component,
-        testRendererInstance,
-        definedTestProps,
-        formatTemplateProps(defaultTestProps),
-        identifiers,
-      )}
+  describe('With custom props', () => {
+    beforeEach(() => {
+      component = mount(
+        <MemoryRouter>
+          <Component ${templateProps} />
+        </MemoryRouter>
+      ).find('${Component.name}');
     });
+    ${testRender()}
+    ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
+    ${testAnchorsBehaviour(identifiers)}
+    ${testFormFields(
+      component,
+      testRendererInstance,
+      definedTestProps,
+      formatTemplateProps(defaultTestProps),
+      identifiers,
+    )}
   });
-  `;
+});
+`;
 }
-
-export default renderTestSuite;

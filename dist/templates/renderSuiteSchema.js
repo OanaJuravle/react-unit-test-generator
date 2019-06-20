@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = renderTestSuite;
 
 require("jsdom-global/register");
 
@@ -12,15 +13,11 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = require("react-router-dom");
-
-var _redux = require("redux");
-
-var _reactRedux = require("react-redux");
-
 var _reactTestRenderer = require("react-test-renderer");
 
 var _reactTestRenderer2 = _interopRequireDefault(_reactTestRenderer);
+
+var _reactRouterDom = require("react-router-dom");
 
 var _lodash = require("lodash");
 
@@ -57,14 +54,9 @@ var _mountReactComponent2 = _interopRequireDefault(_mountReactComponent);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function createTree(Component, props) {
-  var store = (0, _redux.createStore)(function () {});
-
-  var testRenderer = _reactTestRenderer2["default"].create(_react2["default"].createElement(_reactRedux.Provider, {
-    store: store
-  }, _react2["default"].createElement(_reactRouterDom.MemoryRouter, null, _react2["default"].createElement(Component, props))));
+  var testRenderer = _reactTestRenderer2["default"].create(_react2["default"].createElement(_reactRouterDom.MemoryRouter, null, _react2["default"].createElement(Component, props)));
 
   var testRendererTree = testRenderer.toTree();
-  console.log('testRendererTree', testRendererTree);
   var testComponent = testRendererTree.rendered;
 
   while (testComponent.type.name !== Component.name) {
@@ -119,46 +111,27 @@ function testDefaultProps(componentDefaultProps, defaultTestProps) {
 }
 
 function renderTestSuite(componentPath) {
-  console.log('-------------');
-
   var Component = require(componentPath)["default"];
 
-  console.log('COMPONENT', Component);
   var defaultTestProps = setDefaultTestProps(Component.testProps, Component.defaultProps);
   var definedTestProps = setTestProps(Component.testProps, Component.defaultProps);
   var templateProps = (0, _formatProps.formatTemplateProps)(definedTestProps) || '';
 
   var _createTree = createTree(Component, definedTestProps),
       testRendererJSON = _createTree.testRendererJSON,
-      testRendererInstance = _createTree.testRendererInstance; //   const identifiers = createIdentifiersMap(testRendererJSON, componentPath);
-  //   const component = mountReactComponent(Component, definedTestProps);
-  //   const buttonIdentifiers = identifiers.buttons;
-  //   return `
-  // describe('Automated Generated Tests', () => {
-  //   let component;
-  //   ${testDefaultProps(Component.defaultProps, defaultTestProps)}
-  //   describe('With custom props', () => {
-  //     beforeEach(() => {
-  //       component = mount(
-  //         <MemoryRouter>
-  //           <Component ${templateProps} />
-  //         </MemoryRouter>
-  //       ).find('${Component.name}');
-  //     });
-  //     ${testRender()}
-  //     ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
-  //     ${testAnchorsBehaviour(identifiers)}
-  //     ${testFormFields(
-  //       component,
-  //       testRendererInstance,
-  //       definedTestProps,
-  //       formatTemplateProps(defaultTestProps),
-  //       identifiers,
-  //     )}
-  //   });
-  // });
-  // `;
+      testRendererInstance = _createTree.testRendererInstance;
 
+  if (!testRendererJSON) {
+    try {
+      throw new Error('Original Error');
+    } catch (err) {
+      err.message = "Unable to create the identifiers tree for ".concat(Component.name);
+      throw err.message;
+    }
+  }
+
+  var identifiers = (0, _createIdentifiersMap2["default"])(testRendererJSON, componentPath);
+  var component = (0, _mountReactComponent2["default"])(Component, definedTestProps);
+  var buttonIdentifiers = identifiers.buttons;
+  return "\ndescribe('Automated Generated Tests', () => {\n  let component;\n  ".concat(testDefaultProps(Component.defaultProps, defaultTestProps), "\n\n  describe('With custom props', () => {\n    beforeEach(() => {\n      component = mount(\n        <MemoryRouter>\n          <Component ").concat(templateProps, " />\n        </MemoryRouter>\n      ).find('").concat(Component.name, "');\n    });\n    ").concat((0, _testRender2["default"])(), "\n    ").concat((0, _testButtonsBehaviour2["default"])(component, testRendererInstance, definedTestProps, buttonIdentifiers), "\n    ").concat((0, _testAnchorsBehaviour2["default"])(identifiers), "\n    ").concat(testFormFields(component, testRendererInstance, definedTestProps, (0, _formatProps.formatTemplateProps)(defaultTestProps), identifiers), "\n  });\n});\n");
 }
-
-exports["default"] = renderTestSuite;
