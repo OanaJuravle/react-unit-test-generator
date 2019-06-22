@@ -12,7 +12,13 @@ var _renderSuiteSchema = require("./templates/renderSuiteSchema");
 
 var _renderSuiteSchema2 = _interopRequireDefault(_renderSuiteSchema);
 
+var _jestCustomReporter = require("../jestCustomReporter");
+
+var _jestCustomReporter2 = _interopRequireDefault(_jestCustomReporter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var jest = require('jest');
 
 var path = require('path');
 
@@ -31,7 +37,7 @@ if (!fileName) {
 }
 
 var packageName = process.env.npm_package_name;
-var rootDir = path.join(__dirname, "../../../../".concat(packageName));
+var rootDir = path.join(__dirname, "../../".concat(packageName));
 console.log('rootDir', rootDir);
 var matchedFiles = [];
 matchedFiles = (0, _getFiles2["default"])("".concat(rootDir, "/src"), matchedFiles, fileName);
@@ -103,4 +109,16 @@ matchedFiles.forEach(function (componentPath) {
   } catch (err) {
     throw err;
   }
+
+  console.log('------', __dirname);
+  var options = {
+    projects: [__dirname],
+    reporters: ['default'],
+    silent: true
+  };
+  jest.runCLI(options, options.projects).then(function () {
+    console.log('SUCCESS');
+  })["catch"](function (failure) {
+    console.error(failure);
+  });
 });

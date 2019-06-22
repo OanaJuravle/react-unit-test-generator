@@ -1,6 +1,8 @@
 import generalImports from './templates/generalImports';
 import getFiles from './getFiles';
 import renderTestSuite from './templates/renderSuiteSchema';
+import JestCustomReporter from '../jestCustomReporter';
+const jest = require('jest');
 const path = require('path');
 const fs = require('fs');
 
@@ -17,7 +19,7 @@ if (!fileName) {
 }
 
 const packageName = process.env.npm_package_name;
-const rootDir = path.join(__dirname, `../../../../${packageName}`);
+const rootDir = path.join(__dirname, `../../${packageName}`);
 console.log('rootDir', rootDir);
 
 let matchedFiles = [];
@@ -100,4 +102,21 @@ matchedFiles.forEach(componentPath => {
   } catch (err) {
     throw err;
   }
+
+  console.log('------', __dirname);
+
+  const options = {
+    projects: [__dirname],
+    reporters: ['default'],
+    silent: true,
+  };
+
+  jest
+    .runCLI(options, options.projects)
+    .then(() => {
+      console.log('SUCCESS');
+    })
+    .catch(failure => {
+      console.error(failure);
+    });
 });

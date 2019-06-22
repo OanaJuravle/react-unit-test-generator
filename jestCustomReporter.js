@@ -1,5 +1,5 @@
 var Table = require('cli-table');
-const warnings = require('./testGenerator/testGeneratorWarnings');
+const warnings = require('./src/testGeneratorWarnings');
 
 class JestCustomReporter {
   constructor(globalConfig, options) {
