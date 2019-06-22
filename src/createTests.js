@@ -1,8 +1,7 @@
 import generalImports from './templates/generalImports';
 import getFiles from './getFiles';
 import renderTestSuite from './templates/renderSuiteSchema';
-import JestCustomReporter from '../jestCustomReporter';
-import setupTest from '../setupTest';
+
 const jest = require('jest');
 const path = require('path');
 const fs = require('fs');
@@ -105,10 +104,12 @@ matchedFiles.forEach(componentPath => {
   }
 
   const options = {
+    collectCoverage: true,
     projects: [rootDir],
-    reporters: ['default'],
-    setupFiles: [setupTest],
+    reporters: ['default', path.resolve(__dirname, '../jestCustomReporter.js')],
+    setupFiles: [path.resolve(__dirname, '../setupTest.js')],
     silent: true,
+    verbose: true,
   };
 
   jest

@@ -6,9 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
-    "prod": "npm-run-all clean build",
-    "start": "npx babel-node dist/index.js",
-    "test": "jest --verbose=true --coverage --config=jest.config.json"
+    "prod": "npm-run-all clean build"
   },
   "bin": {
     "react-unit-test-generator": "./dist/index.js"

@@ -12,14 +12,6 @@ var _renderSuiteSchema = require("./templates/renderSuiteSchema");
 
 var _renderSuiteSchema2 = _interopRequireDefault(_renderSuiteSchema);
 
-var _jestCustomReporter = require("../jestCustomReporter");
-
-var _jestCustomReporter2 = _interopRequireDefault(_jestCustomReporter);
-
-var _setupTest = require("../setupTest");
-
-var _setupTest2 = _interopRequireDefault(_setupTest);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var jest = require('jest');
@@ -115,10 +107,12 @@ matchedFiles.forEach(function (componentPath) {
   }
 
   var options = {
+    collectCoverage: true,
     projects: [rootDir],
-    reporters: ['default'],
-    setupFiles: [_setupTest2["default"]],
-    silent: true
+    reporters: ['default', path.resolve(__dirname, '../jestCustomReporter.js')],
+    setupFiles: [path.resolve(__dirname, '../setupTest.js')],
+    silent: true,
+    verbose: true
   };
   jest.runCLI(options, options.projects).then(function () {
     console.log('SUCCESS');

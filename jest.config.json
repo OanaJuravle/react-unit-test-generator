@@ -1,7 +1,0 @@
-{
-  "setupFiles": ["./setupTest.js"],
-  "collectCoverageFrom": ["<rootDir>/src/**/*.{js,jsx}"],
-  "moduleFileExtensions": ["js", "jsx", "json", "node"],
-  "modulePaths": [""],
-  "reporters": ["default", "./jestCustomReporter.js"]
-}
