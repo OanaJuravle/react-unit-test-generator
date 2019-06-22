@@ -16,6 +16,10 @@ var _jestCustomReporter = require("../jestCustomReporter");
 
 var _jestCustomReporter2 = _interopRequireDefault(_jestCustomReporter);
 
+var _setupTest = require("../setupTest");
+
+var _setupTest2 = _interopRequireDefault(_setupTest);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var jest = require('jest');
@@ -32,12 +36,12 @@ if (!fileName) {
     throw new Error('Original Error');
   } catch (err) {
     err.message = "No file provided";
-    throw err.message;
+    throw err;
   }
 }
 
 var packageName = process.env.npm_package_name;
-var rootDir = path.join(__dirname, "../../".concat(packageName));
+var rootDir = path.join(__dirname, "../../../../".concat(packageName));
 console.log('rootDir', rootDir);
 var matchedFiles = [];
 matchedFiles = (0, _getFiles2["default"])("".concat(rootDir, "/src"), matchedFiles, fileName);
@@ -48,7 +52,7 @@ if (matchedFiles.length === 0) {
     throw new Error('Original Error');
   } catch (err) {
     err.message = "Unable to find any file match for ".concat(fileName);
-    throw err.message;
+    throw err;
   }
 }
 
@@ -64,7 +68,7 @@ matchedFiles.forEach(function (componentPath) {
       throw new Error('Original Error');
     } catch (err) {
       err.message = "The file ".concat(fileName, " does not export a component");
-      throw err.message;
+      throw err;
     }
   }
 
@@ -110,10 +114,10 @@ matchedFiles.forEach(function (componentPath) {
     throw err;
   }
 
-  console.log('------', __dirname);
   var options = {
-    projects: [__dirname],
+    projects: [rootDir],
     reporters: ['default'],
+    setupFiles: [_setupTest2["default"]],
     silent: true
   };
   jest.runCLI(options, options.projects).then(function () {

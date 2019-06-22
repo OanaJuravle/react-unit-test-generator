@@ -2,6 +2,7 @@ import generalImports from './templates/generalImports';
 import getFiles from './getFiles';
 import renderTestSuite from './templates/renderSuiteSchema';
 import JestCustomReporter from '../jestCustomReporter';
+import setupTest from '../setupTest';
 const jest = require('jest');
 const path = require('path');
 const fs = require('fs');
@@ -14,12 +15,12 @@ if (!fileName) {
     throw new Error('Original Error');
   } catch (err) {
     err.message = `No file provided`;
-    throw err.message;
+    throw err;
   }
 }
 
 const packageName = process.env.npm_package_name;
-const rootDir = path.join(__dirname, `../../${packageName}`);
+const rootDir = path.join(__dirname, `../../../../${packageName}`);
 console.log('rootDir', rootDir);
 
 let matchedFiles = [];
@@ -31,7 +32,7 @@ if (matchedFiles.length === 0) {
     throw new Error('Original Error');
   } catch (err) {
     err.message = `Unable to find any file match for ${fileName}`;
-    throw err.message;
+    throw err;
   }
 }
 
@@ -53,7 +54,7 @@ matchedFiles.forEach(componentPath => {
       throw new Error('Original Error');
     } catch (err) {
       err.message = `The file ${fileName} does not export a component`;
-      throw err.message;
+      throw err;
     }
   }
 
@@ -103,11 +104,10 @@ matchedFiles.forEach(componentPath => {
     throw err;
   }
 
-  console.log('------', __dirname);
-
   const options = {
-    projects: [__dirname],
+    projects: [rootDir],
     reporters: ['default'],
+    setupFiles: [setupTest],
     silent: true,
   };
 
