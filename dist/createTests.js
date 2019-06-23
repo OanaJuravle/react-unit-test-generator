@@ -22,6 +22,7 @@ var fs = require('fs');
 
 console.log('**** From Package ****');
 var fileName = process.env.npm_config_fileName;
+var filesToRunTestsFor = [];
 
 if (!fileName) {
   try {
@@ -50,7 +51,7 @@ if (matchedFiles.length === 0) {
 
 process.TEST_GENERATOR_WARNINGS = [];
 matchedFiles.forEach(function (componentPath) {
-  var destination = componentPath.split('/').slice(-1)[0].split('.')[0];
+  var componentName = componentPath.split('/').slice(-1)[0].split('.')[0];
   var relativePath = path.relative(path.resolve(packageName, "../../".concat(packageName, "/tests")), componentPath).replace(/\\/g, '/');
 
   var Component = require(componentPath)["default"];
@@ -67,17 +68,17 @@ matchedFiles.forEach(function (componentPath) {
   try {
     fs.accessSync(componentPath, fs.constants.R_OK);
   } catch (err) {
-    console.log("".concat(destination, " is not readable"));
+    console.log("".concat(componentName, " is not readable"));
   }
 
   try {
     fs.accessSync(componentPath, fs.constants.W_OK);
   } catch (err) {
-    console.log("".concat(destination, " is not writable"));
+    console.log("".concat(componentName, " is not writable"));
   }
 
-  console.log('Generating unit tests for ' + destination + '\n');
-  var destinationFile = "".concat(rootDir, "/tests/").concat(destination, ".test.js");
+  console.log('Generating unit tests for ' + componentName + '\n');
+  var destinationFile = "".concat(rootDir, "/tests/").concat(componentName, ".test.js");
   console.log('Destination File: ', destinationFile);
 
   try {
@@ -91,32 +92,23 @@ matchedFiles.forEach(function (componentPath) {
   try {
     console.log('Adding test suite...');
     fs.appendFileSync(destinationFile, (0, _renderSuiteSchema2["default"])(componentPath));
+    filesToRunTestsFor.push(destinationFile.substring(destinationFile.indexOf(componentName)));
     console.log('Done!\n');
   } catch (err) {
     throw err;
   }
-
-  try {
-    if (process.TEST_GENERATOR_WARNINGS.length > 0) {
-      console.log('Adding warnings...');
-      fs.writeFileSync(path.resolve(__dirname, './testGeneratorWarnings.js'), "module.exports = ".concat(JSON.stringify(process.TEST_GENERATOR_WARNINGS)));
-      console.log('Done!\n');
-    }
-  } catch (err) {
-    throw err;
-  }
-
-  var options = {
-    collectCoverage: true,
-    projects: [rootDir],
-    reporters: ['default', path.resolve(__dirname, '../jestCustomReporter.js')],
-    setupFiles: [path.resolve(__dirname, '../setupTest.js')],
-    silent: true,
-    verbose: true
-  };
-  jest.runCLI(options, options.projects).then(function () {
-    console.log('SUCCESS');
-  })["catch"](function (failure) {
-    console.error(failure);
-  });
 });
+var options = {
+  collectCoverage: true,
+  projects: [rootDir],
+  reporters: ['default', path.resolve(__dirname, '../jestCustomReporter.js')],
+  setupFiles: [path.resolve(__dirname, '../setupTest.js')],
+  testPathPattern: filesToRunTestsFor,
+  verbose: true
+};
+
+try {
+  jest.runCLI(options, options.projects);
+} catch (err) {
+  throw err;
+}
