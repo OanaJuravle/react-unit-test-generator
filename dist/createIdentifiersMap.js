@@ -14,17 +14,16 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var fs = require('fs');
 
-var identifiers = {
-  anchors: [],
-  buttons: [],
-  form: {
-    fields: [],
-    submitButton: {}
-  },
-  inputs: []
-};
-
 function depthFirstTraversal(root) {
+  var identifiers = {
+    anchors: [],
+    buttons: [],
+    form: {
+      fields: [],
+      submitButton: {}
+    },
+    inputs: []
+  };
   var stack = [];
   var node;
   var previousNode;
@@ -114,11 +113,12 @@ function depthFirstTraversal(root) {
 
     previousNode = node;
   }
+
+  return identifiers;
 }
 
 function createIdentifiersMap(tree) {
-  depthFirstTraversal(tree);
-  return identifiers;
+  return depthFirstTraversal(tree);
 }
 
 exports["default"] = createIdentifiersMap;

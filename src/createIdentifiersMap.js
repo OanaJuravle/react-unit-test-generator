@@ -1,16 +1,15 @@
 const fs = require('fs');
 
-let identifiers = {
-  anchors: [],
-  buttons: [],
-  form: {
-    fields: [],
-    submitButton: {},
-  },
-  inputs: [],
-};
-
 function depthFirstTraversal(root) {
+  let identifiers = {
+    anchors: [],
+    buttons: [],
+    form: {
+      fields: [],
+      submitButton: {},
+    },
+    inputs: [],
+  };
   let stack = [];
   let node;
   let previousNode;
@@ -89,11 +88,11 @@ function depthFirstTraversal(root) {
     }
     previousNode = node;
   }
+  return identifiers;
 }
 
 function createIdentifiersMap(tree) {
-  depthFirstTraversal(tree);
-  return identifiers;
+  return depthFirstTraversal(tree);
 }
 
 export default createIdentifiersMap;
