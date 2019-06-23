@@ -16,5 +16,5 @@ var _testRender2 = _interopRequireDefault(_testRender);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function testRenderWithDefaultProps(defaultProps) {
-  return "\n  describe('With default props', () => {\n    ".concat((0, _mountComponent2["default"])(defaultProps), "\n    ").concat((0, _testRender2["default"])(), "\n  });");
+  return "\n  describe('With default props', () => {\n    ".concat((0, _mountComponent2["default"])(defaultProps), "\n    ").concat((0, _testRender2["default"])(), "\n  });\n  ");
 }

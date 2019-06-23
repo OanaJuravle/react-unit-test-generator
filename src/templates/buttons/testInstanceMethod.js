@@ -21,7 +21,8 @@ function renderTestSuite(testProps, element, method, action, hasPositiveAssertio
     ${clickButton(element.identifier, action)}
     ${returnAssertion(hasPositiveAssertion)}
     ${checkForStateUpdate()}
-  });`;
+  });
+  `;
 }
 
 function renderTestDescription(element, method, action, hasPositiveAssertion) {

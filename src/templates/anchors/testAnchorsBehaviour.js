@@ -19,14 +19,14 @@ export default function testAnchorsBehaviour(identifiers) {
         if (!paths[commonPath]) {
           paths[commonPath] = 1;
           return `
-  it('tests that redirect works correctly on "${element.text}" click', () => {
-      window.history.pushState({}, '', '${element.redirectTo}');
-      const anchor = component.find('[data-testid="${element.identifier}"]').at(0);
-      anchor.simulate('click');
-      component.update();
-      expect(window.location.href).toContain('${element.redirectTo}');
-  });
-        `;
+          it('tests that redirect works correctly on "${element.text}" click', () => {
+              window.history.pushState({}, '', '${element.redirectTo}');
+              const anchor = component.find('[data-testid="${element.identifier}"]').at(0);
+              anchor.simulate('click');
+              component.update();
+              expect(window.location.href).toContain('${element.redirectTo}');
+          });
+          `;
         }
       })
       .join('')

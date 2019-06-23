@@ -7,6 +7,10 @@ exports["default"] = renderTestSuite;
 
 require("jsdom-global/register");
 
+var _prettier = require("prettier");
+
+var _prettier2 = _interopRequireDefault(_prettier);
+
 require("@babel/polyfill");
 
 var _react = require("react");
@@ -133,5 +137,7 @@ function renderTestSuite(componentPath) {
   var identifiers = (0, _createIdentifiersMap2["default"])(testRendererJSON, componentPath);
   var component = (0, _mountReactComponent2["default"])(Component, definedTestProps);
   var buttonIdentifiers = identifiers.buttons;
-  return "\ndescribe('Automated Generated Tests', () => {\n  let component;\n  ".concat(testDefaultProps(Component.defaultProps, defaultTestProps), "\n\n  describe('With custom props', () => {\n    beforeEach(() => {\n      component = mount(\n        <MemoryRouter>\n          <Component ").concat(templateProps, " />\n        </MemoryRouter>\n      ).find('").concat(Component.name, "');\n    });\n    ").concat((0, _testRender2["default"])(), "\n    ").concat((0, _testButtonsBehaviour2["default"])(component, testRendererInstance, definedTestProps, buttonIdentifiers), "\n    ").concat((0, _testAnchorsBehaviour2["default"])(identifiers), "\n    ").concat(testFormFields(component, testRendererInstance, definedTestProps, (0, _formatProps.formatTemplateProps)(defaultTestProps), identifiers), "\n  });\n});\n");
+  return _prettier2["default"].format("\n    describe('Automated Generated Tests', () => {\n      let component;\n      ".concat(testDefaultProps(Component.defaultProps, defaultTestProps), "\n\n      describe('With custom props', () => {\n        beforeEach(() => {\n          component = mount(\n            <MemoryRouter>\n              <Component ").concat(templateProps, " />\n            </MemoryRouter>\n          ).find('").concat(Component.name, "');\n        });\n        ").concat((0, _testRender2["default"])(), "\n        ").concat((0, _testButtonsBehaviour2["default"])(component, testRendererInstance, definedTestProps, buttonIdentifiers), "\n        ").concat((0, _testAnchorsBehaviour2["default"])(identifiers), "\n        ").concat(testFormFields(component, testRendererInstance, definedTestProps, (0, _formatProps.formatTemplateProps)(defaultTestProps), identifiers), "\n      });\n    });\n  "), {
+    parser: 'babel'
+  });
 }

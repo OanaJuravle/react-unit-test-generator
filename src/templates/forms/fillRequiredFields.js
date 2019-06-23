@@ -17,9 +17,9 @@ export default function fillRequiredFields(identifiers) {
           return (
             field.identifier &&
             `
-    field = component.find('[data-testid="${field.identifier}"] input');
-    field.simulate('change', {target: ${mockInputValue(field)}});
-        `
+            field = component.find('[data-testid="${field.identifier}"] input');
+            field.simulate('change', {target: ${mockInputValue(field)}});
+            `
           );
         })
         .join('')}`;

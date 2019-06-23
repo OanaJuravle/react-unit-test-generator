@@ -19,6 +19,6 @@ function mockInputValue(field) {
 
 function fillRequiredFields(identifiers) {
   return "\n    ".concat(identifiers && identifiers.form && identifiers.form.fields.map(function (field) {
-    return field.identifier && "\n    field = component.find('[data-testid=\"".concat(field.identifier, "\"] input');\n    field.simulate('change', {target: ").concat(mockInputValue(field), "});\n        ");
+    return field.identifier && "\n            field = component.find('[data-testid=\"".concat(field.identifier, "\"] input');\n            field.simulate('change', {target: ").concat(mockInputValue(field), "});\n            ");
   }).join(''));
 }

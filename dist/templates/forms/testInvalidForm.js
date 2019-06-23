@@ -13,7 +13,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function checkFormIsInvalid(submitButtonIdentifier) {
   if (submitButtonIdentifier.disabled === true) {
-    return "\n    const button = component.find('button[data-testid=\"".concat(submitButtonIdentifier.identifier, "\"]');\n    expect(button.props().disabled).toBeTruthy();");
+    return "\n    const button = component.find('button[data-testid=\"".concat(submitButtonIdentifier.identifier, "\"]');\n    expect(button.props().disabled).toBeTruthy();\n    ");
   }
 
   return checkForErrors();
@@ -24,5 +24,5 @@ function checkForErrors() {
 }
 
 function testInvalidForm(submitButtonIdentifier, identifiers) {
-  return "\n  it('tests Form Fields - failure', () => {\n    ".concat((0, _blurRequiredFields2["default"])(identifiers), "\n    ").concat(checkFormIsInvalid(submitButtonIdentifier), "\n  });");
+  return "\n  it('tests Form Fields - failure', () => {\n    ".concat((0, _blurRequiredFields2["default"])(identifiers), "\n    ").concat(checkFormIsInvalid(submitButtonIdentifier), "\n  });\n  ");
 }

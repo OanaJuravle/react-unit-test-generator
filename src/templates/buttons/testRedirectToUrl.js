@@ -11,5 +11,6 @@ export default function testRedirectToUrl(element) {
     ${clickButton(element.identifier)}
     component.update();
     expect(window.location.href).toContain('${element.redirectTo}');
-  });`;
+  });
+  `;
 }

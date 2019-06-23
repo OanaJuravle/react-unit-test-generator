@@ -4,7 +4,8 @@ function checkFormIsInvalid(submitButtonIdentifier) {
   if (submitButtonIdentifier.disabled === true) {
     return `
     const button = component.find('button[data-testid="${submitButtonIdentifier.identifier}"]');
-    expect(button.props().disabled).toBeTruthy();`;
+    expect(button.props().disabled).toBeTruthy();
+    `;
   }
   return checkForErrors();
 }
@@ -18,5 +19,6 @@ export default function testInvalidForm(submitButtonIdentifier, identifiers) {
   it('tests Form Fields - failure', () => {
     ${blurRequiredFields(identifiers)}
     ${checkFormIsInvalid(submitButtonIdentifier)}
-  });`;
+  });
+  `;
 }

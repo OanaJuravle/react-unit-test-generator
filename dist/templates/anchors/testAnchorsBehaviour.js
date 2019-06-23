@@ -21,7 +21,7 @@ function testAnchorsBehaviour(identifiers) {
 
     if (!paths[commonPath]) {
       paths[commonPath] = 1;
-      return "\n  it('tests that redirect works correctly on \"".concat(element.text, "\" click', () => {\n      window.history.pushState({}, '', '").concat(element.redirectTo, "');\n      const anchor = component.find('[data-testid=\"").concat(element.identifier, "\"]').at(0);\n      anchor.simulate('click');\n      component.update();\n      expect(window.location.href).toContain('").concat(element.redirectTo, "');\n  });\n        ");
+      return "\n          it('tests that redirect works correctly on \"".concat(element.text, "\" click', () => {\n              window.history.pushState({}, '', '").concat(element.redirectTo, "');\n              const anchor = component.find('[data-testid=\"").concat(element.identifier, "\"]').at(0);\n              anchor.simulate('click');\n              component.update();\n              expect(window.location.href).toContain('").concat(element.redirectTo, "');\n          });\n          ");
     }
   }).join('');
 }

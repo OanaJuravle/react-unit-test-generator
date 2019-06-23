@@ -6,5 +6,6 @@ export default function testRenderWithDefaultProps(defaultProps) {
   describe('With default props', () => {
     ${mountComponent(defaultProps)}
     ${testRender()}
-  });`;
+  });
+  `;
 }

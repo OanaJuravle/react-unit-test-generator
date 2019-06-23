@@ -1,4 +1,5 @@
 import 'jsdom-global/register';
+import prettier from 'prettier';
 import '@babel/polyfill';
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
@@ -88,30 +89,38 @@ export default function renderTestSuite(componentPath) {
 
   const buttonIdentifiers = identifiers.buttons;
 
-  return `
-describe('Automated Generated Tests', () => {
-  let component;
-  ${testDefaultProps(Component.defaultProps, defaultTestProps)}
+  return prettier.format(
+    `
+    describe('Automated Generated Tests', () => {
+      let component;
+      ${testDefaultProps(Component.defaultProps, defaultTestProps)}
 
-  describe('With custom props', () => {
-    beforeEach(() => {
-      component = mount(
-        <MemoryRouter>
-          <Component ${templateProps} />
-        </MemoryRouter>
-      ).find('${Component.name}');
+      describe('With custom props', () => {
+        beforeEach(() => {
+          component = mount(
+            <MemoryRouter>
+              <Component ${templateProps} />
+            </MemoryRouter>
+          ).find('${Component.name}');
+        });
+        ${testRender()}
+        ${testButtonsBehaviour(
+          component,
+          testRendererInstance,
+          definedTestProps,
+          buttonIdentifiers,
+        )}
+        ${testAnchorsBehaviour(identifiers)}
+        ${testFormFields(
+          component,
+          testRendererInstance,
+          definedTestProps,
+          formatTemplateProps(defaultTestProps),
+          identifiers,
+        )}
+      });
     });
-    ${testRender()}
-    ${testButtonsBehaviour(component, testRendererInstance, definedTestProps, buttonIdentifiers)}
-    ${testAnchorsBehaviour(identifiers)}
-    ${testFormFields(
-      component,
-      testRendererInstance,
-      definedTestProps,
-      formatTemplateProps(defaultTestProps),
-      identifiers,
-    )}
-  });
-});
-`;
+  `,
+    { parser: 'babel' },
+  );
 }

@@ -64,7 +64,8 @@ export default function validateForm(
           identifiers,
         )}
         ${hasRequiredFields ? testInvalidForm(submitButtonIdentifier, identifiers) : ''}
-      });`;
+      });
+      `;
   }
   return '';
 }
