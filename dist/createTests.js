@@ -38,24 +38,38 @@ var rootDir = path.join(__dirname, "../../../../".concat(packageName));
 console.log('rootDir', rootDir);
 var srcPath = './src';
 var testsPath = './tests';
-var pathToConfigFile = path.join(rootDir, './react-unit-test-generator.config.json');
-console.log(pathToConfigFile);
+var configFileName = '';
+process.argv.map(function (arg) {
+  if (arg.includes('--config')) {
+    configFileName = arg.split('--config=')[1];
+  }
+});
 
-if (fs.existsSync(pathToConfigFile)) {
+if (configFileName) {
   try {
-    var configOptions = fs.readFileSync(pathToConfigFile);
-    configOptions = JSON.parse(configOptions);
-    console.log(configOptions);
+    var pathToConfigFile = path.join(rootDir, './'.concat(configFileName));
 
-    if (configOptions.entry) {
-      srcPath = configOptions.entry;
-    }
+    if (fs.existsSync(pathToConfigFile)) {
+      try {
+        var configOptions = fs.readFileSync(pathToConfigFile);
+        configOptions = JSON.parse(configOptions);
 
-    if (configOptions.destination) {
-      testsPath = configOptions.destination;
+        if (configOptions.entry) {
+          srcPath = configOptions.entry;
+        }
+
+        if (configOptions.destination) {
+          testsPath = configOptions.destination;
+        }
+      } catch (err) {
+        err.message = 'Unable to read from config file.';
+        throw err;
+      }
+    } else {
+      throw new Error('Cannot find the specified config file.');
     }
   } catch (err) {
-    console.log('\nUnable to read from config file. Default paths for src and tests directories will be used.\n');
+    throw err;
   }
 }
 

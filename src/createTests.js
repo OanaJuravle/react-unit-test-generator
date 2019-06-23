@@ -26,23 +26,37 @@ console.log('rootDir', rootDir);
 let srcPath = './src';
 let testsPath = './tests';
 
-const pathToConfigFile = path.join(rootDir, './react-unit-test-generator.config.json');
-console.log(pathToConfigFile);
-if (fs.existsSync(pathToConfigFile)) {
+let configFileName = '';
+process.argv.map(arg => {
+  if (arg.includes('--config')) {
+    configFileName = arg.split('--config=')[1];
+  }
+});
+
+if (configFileName) {
   try {
-    let configOptions = fs.readFileSync(pathToConfigFile);
-    configOptions = JSON.parse(configOptions);
-    console.log(configOptions);
-    if (configOptions.entry) {
-      srcPath = configOptions.entry;
-    }
-    if (configOptions.destination) {
-      testsPath = configOptions.destination;
+    var pathToConfigFile = path.join(rootDir, './'.concat(configFileName));
+    if (fs.existsSync(pathToConfigFile)) {
+      try {
+        var configOptions = fs.readFileSync(pathToConfigFile);
+        configOptions = JSON.parse(configOptions);
+
+        if (configOptions.entry) {
+          srcPath = configOptions.entry;
+        }
+
+        if (configOptions.destination) {
+          testsPath = configOptions.destination;
+        }
+      } catch (err) {
+        err.message = 'Unable to read from config file.';
+        throw err;
+      }
+    } else {
+      throw new Error('Cannot find the specified config file.');
     }
   } catch (err) {
-    console.log(
-      '\nUnable to read from config file. Default paths for src and tests directories will be used.\n',
-    );
+    throw err;
   }
 }
 
