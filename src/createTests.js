@@ -7,7 +7,8 @@ const path = require('path');
 const fs = require('fs');
 
 console.log('**** From Package ****');
-var fileName = process.env.npm_config_fileName;
+const fileName = process.env.npm_config_fileName;
+const filesToRunTestsFor = [];
 
 if (!fileName) {
   try {
@@ -38,7 +39,7 @@ if (matchedFiles.length === 0) {
 process.TEST_GENERATOR_WARNINGS = [];
 
 matchedFiles.forEach(componentPath => {
-  const destination = componentPath
+  const componentName = componentPath
     .split('/')
     .slice(-1)[0]
     .split('.')[0];
@@ -60,18 +61,18 @@ matchedFiles.forEach(componentPath => {
   try {
     fs.accessSync(componentPath, fs.constants.R_OK);
   } catch (err) {
-    console.log(`${destination} is not readable`);
+    console.log(`${componentName} is not readable`);
   }
 
   try {
     fs.accessSync(componentPath, fs.constants.W_OK);
   } catch (err) {
-    console.log(`${destination} is not writable`);
+    console.log(`${componentName} is not writable`);
   }
 
-  console.log('Generating unit tests for ' + destination + '\n');
+  console.log('Generating unit tests for ' + componentName + '\n');
 
-  const destinationFile = `${rootDir}/tests/${destination}.test.js`;
+  const destinationFile = `${rootDir}/tests/${componentName}.test.js`;
   console.log('Destination File: ', destinationFile);
 
   try {
@@ -85,39 +86,24 @@ matchedFiles.forEach(componentPath => {
   try {
     console.log('Adding test suite...');
     fs.appendFileSync(destinationFile, renderTestSuite(componentPath));
+    filesToRunTestsFor.push(destinationFile.substring(destinationFile.indexOf(componentName)));
     console.log('Done!\n');
   } catch (err) {
     throw err;
   }
-
-  try {
-    if (process.TEST_GENERATOR_WARNINGS.length > 0) {
-      console.log('Adding warnings...');
-      fs.writeFileSync(
-        path.resolve(__dirname, './testGeneratorWarnings.js'),
-        `module.exports = ${JSON.stringify(process.TEST_GENERATOR_WARNINGS)}`,
-      );
-      console.log('Done!\n');
-    }
-  } catch (err) {
-    throw err;
-  }
-
-  const options = {
-    collectCoverage: true,
-    projects: [rootDir],
-    reporters: ['default', path.resolve(__dirname, '../jestCustomReporter.js')],
-    setupFiles: [path.resolve(__dirname, '../setupTest.js')],
-    silent: true,
-    verbose: true,
-  };
-
-  jest
-    .runCLI(options, options.projects)
-    .then(() => {
-      console.log('SUCCESS');
-    })
-    .catch(failure => {
-      console.error(failure);
-    });
 });
+
+const options = {
+  collectCoverage: true,
+  projects: [rootDir],
+  reporters: ['default', path.resolve(__dirname, '../jestCustomReporter.js')],
+  setupFiles: [path.resolve(__dirname, '../setupTest.js')],
+  testPathPattern: filesToRunTestsFor,
+  verbose: true,
+};
+
+try {
+  jest.runCLI(options, options.projects);
+} catch (err) {
+  throw err;
+}

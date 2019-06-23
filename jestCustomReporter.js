@@ -1,5 +1,4 @@
 var Table = require('cli-table');
-const warnings = require('./src/testGeneratorWarnings');
 
 class JestCustomReporter {
   constructor(globalConfig, options) {
@@ -8,6 +7,7 @@ class JestCustomReporter {
   }
 
   onRunComplete() {
+    const warnings = process.TEST_GENERATOR_WARNINGS;
     var table = new Table({
       chars: {
         top: '-',
