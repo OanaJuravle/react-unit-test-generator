@@ -14,7 +14,7 @@ if (!fileName) {
   try {
     throw new Error('Original Error');
   } catch (err) {
-    err.message = `No file provided`;
+    err.message = `No file provided! Please provide a file/path argument: --fileName=<FileNameOrPath>`;
     throw err;
   }
 }
@@ -23,8 +23,31 @@ const packageName = process.env.npm_package_name;
 const rootDir = path.join(__dirname, `../../../../${packageName}`);
 console.log('rootDir', rootDir);
 
+let srcPath = './src';
+let testsPath = './tests';
+
+const pathToConfigFile = path.join(rootDir, './react-unit-test-generator.config.json');
+console.log(pathToConfigFile);
+if (fs.existsSync(pathToConfigFile)) {
+  try {
+    let configOptions = fs.readFileSync(pathToConfigFile);
+    configOptions = JSON.parse(configOptions);
+    console.log(configOptions);
+    if (configOptions.entry) {
+      srcPath = configOptions.entry;
+    }
+    if (configOptions.destination) {
+      testsPath = configOptions.destination;
+    }
+  } catch (err) {
+    console.log(
+      '\nUnable to read from config file. Default paths for src and tests directories will be used.\n',
+    );
+  }
+}
+
 let matchedFiles = [];
-matchedFiles = getFiles(`${rootDir}/src`, matchedFiles, fileName);
+matchedFiles = getFiles(path.join(rootDir, srcPath), matchedFiles, fileName);
 console.log(matchedFiles);
 
 if (matchedFiles.length === 0) {
@@ -45,7 +68,10 @@ matchedFiles.forEach(componentPath => {
     .split('.')[0];
 
   const relativePath = path
-    .relative(path.resolve(packageName, `../../${packageName}/tests`), componentPath)
+    .relative(
+      path.resolve(packageName, '../../'.concat(path.join(packageName, testsPath))),
+      componentPath,
+    )
     .replace(/\\/g, '/');
 
   const Component = require(componentPath).default;
@@ -72,7 +98,7 @@ matchedFiles.forEach(componentPath => {
 
   console.log('Generating unit tests for ' + componentName + '\n');
 
-  const destinationFile = `${rootDir}/tests/${componentName}.test.js`;
+  const destinationFile = path.join(rootDir, testsPath).concat('/', componentName, '.test.js');
   console.log('Destination File: ', destinationFile);
 
   try {

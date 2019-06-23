@@ -28,7 +28,7 @@ if (!fileName) {
   try {
     throw new Error('Original Error');
   } catch (err) {
-    err.message = "No file provided";
+    err.message = "No file provided! Please provide a file/path argument: --fileName=<FileNameOrPath>";
     throw err;
   }
 }
@@ -36,8 +36,31 @@ if (!fileName) {
 var packageName = process.env.npm_package_name;
 var rootDir = path.join(__dirname, "../../../../".concat(packageName));
 console.log('rootDir', rootDir);
+var srcPath = './src';
+var testsPath = './tests';
+var pathToConfigFile = path.join(rootDir, './react-unit-test-generator.config.json');
+console.log(pathToConfigFile);
+
+if (fs.existsSync(pathToConfigFile)) {
+  try {
+    var configOptions = fs.readFileSync(pathToConfigFile);
+    configOptions = JSON.parse(configOptions);
+    console.log(configOptions);
+
+    if (configOptions.entry) {
+      srcPath = configOptions.entry;
+    }
+
+    if (configOptions.destination) {
+      testsPath = configOptions.destination;
+    }
+  } catch (err) {
+    console.log('\nUnable to read from config file. Default paths for src and tests directories will be used.\n');
+  }
+}
+
 var matchedFiles = [];
-matchedFiles = (0, _getFiles2["default"])("".concat(rootDir, "/src"), matchedFiles, fileName);
+matchedFiles = (0, _getFiles2["default"])(path.join(rootDir, srcPath), matchedFiles, fileName);
 console.log(matchedFiles);
 
 if (matchedFiles.length === 0) {
@@ -52,7 +75,7 @@ if (matchedFiles.length === 0) {
 process.TEST_GENERATOR_WARNINGS = [];
 matchedFiles.forEach(function (componentPath) {
   var componentName = componentPath.split('/').slice(-1)[0].split('.')[0];
-  var relativePath = path.relative(path.resolve(packageName, "../../".concat(packageName, "/tests")), componentPath).replace(/\\/g, '/');
+  var relativePath = path.relative(path.resolve(packageName, '../../'.concat(path.join(packageName, testsPath))), componentPath).replace(/\\/g, '/');
 
   var Component = require(componentPath)["default"];
 
@@ -78,7 +101,7 @@ matchedFiles.forEach(function (componentPath) {
   }
 
   console.log('Generating unit tests for ' + componentName + '\n');
-  var destinationFile = "".concat(rootDir, "/tests/").concat(componentName, ".test.js");
+  var destinationFile = path.join(rootDir, testsPath).concat('/', componentName, '.test.js');
   console.log('Destination File: ', destinationFile);
 
   try {
