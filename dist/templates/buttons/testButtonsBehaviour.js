@@ -19,6 +19,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function testButtonsBehaviours(component, testRendererInstance, testProps, buttonIdentifiers) {
   return buttonIdentifiers.map(function (element) {
+    if (!element.identifier) {
+      return noIdentifierSpecified(element);
+    }
+
     if (element.redirectTo) {
       return (0, _testRedirectToUrl2["default"])(element);
     }

@@ -91,7 +91,7 @@ export default function renderTestSuite(componentPath) {
 
   return prettier.format(
     `
-    describe('Automated Generated Tests', () => {
+    describe(Automated Generated Tests for ${Component.name}', () => {
       let component;
       ${testDefaultProps(Component.defaultProps, defaultTestProps)}
 

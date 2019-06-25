@@ -31,7 +31,7 @@ function returnAssertion(hasPositiveAssertion) {
 
 function renderTestSuite(testProps, element, method, action, hasPositiveAssertion) {
   var templateProps = (0, _formatProps.formatTemplateProps)(testProps) || '';
-  return "\n\n  it('tests the \"".concat(element.label, "\" button click', () => {\n    let spy;\n    ").concat((0, _mockMethod2["default"])(method, action, true), "\n    ").concat((0, _mountComponent2["default"])(templateProps), "\n    ").concat((0, _clickButton2["default"])(element.identifier, action), "\n    ").concat(returnAssertion(hasPositiveAssertion), "\n    ").concat((0, _checkForStateUpdate2["default"])(), "\n  });\n  ");
+  return "\n  it('tests the \"".concat(element.label, "\" button click', () => {\n    let spy;\n    ").concat((0, _mockMethod2["default"])(method, action, true), "\n    ").concat((0, _mountComponent2["default"])(templateProps), "\n    ").concat((0, _clickButton2["default"])(element.identifier, action), "\n    ").concat(returnAssertion(hasPositiveAssertion), "\n    ").concat((0, _checkForStateUpdate2["default"])(), "\n  });\n  ");
 }
 
 function renderTestDescription(element, method, action, hasPositiveAssertion) {

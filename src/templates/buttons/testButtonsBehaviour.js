@@ -10,6 +10,10 @@ export default function testButtonsBehaviours(
 ) {
   return buttonIdentifiers
     .map(element => {
+      if (!element.identifier) {
+        return noIdentifierSpecified(element);
+      }
+
       if (element.redirectTo) {
         return testRedirectToUrl(element);
       }

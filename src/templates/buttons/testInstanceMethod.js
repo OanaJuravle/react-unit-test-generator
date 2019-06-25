@@ -13,7 +13,6 @@ function returnAssertion(hasPositiveAssertion) {
 function renderTestSuite(testProps, element, method, action, hasPositiveAssertion) {
   const templateProps = formatTemplateProps(testProps) || '';
   return `
-
   it('tests the "${element.label}" button click', () => {
     let spy;
     ${mockMethod(method, action, true)}

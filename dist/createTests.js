@@ -116,7 +116,7 @@ matchedFiles.forEach(function (componentPath) {
 
   console.log('Generating unit tests for ' + componentName + '\n');
   var destinationFile = path.join(rootDir, testsPath).concat('/', componentName, '.test.js');
-  console.log('Destination File: ', destinationFile);
+  console.log('Destination File: ', path.normalize(destinationFile));
 
   try {
     console.log('Adding imports...');
