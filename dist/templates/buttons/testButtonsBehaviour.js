@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function testButtonsBehaviours(component, testRendererInstance, testProps, buttonIdentifiers) {
   return buttonIdentifiers.map(function (element) {
     if (!element.identifier) {
-      return noIdentifierSpecified(element);
+      return (0, _warnings.noIdentifierSpecified)(element);
     }
 
     if (element.redirectTo) {

@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.renderTestDescription = renderTestDescription;
 exports["default"] = testPropMethod;
 
 var _clickButton = require("../../helpers/clickButton");

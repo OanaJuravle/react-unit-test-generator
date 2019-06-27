@@ -40,7 +40,9 @@ function validateForm(component, testRendererInstance, testProps, templateProps,
 
   var submitButtonIdentifier = identifiers.form.submitButton;
   var reactFormElement = component.find("[data-testid=\"".concat(identifiers.form.identifier, "\"]")).at(0);
-  var boundedMethod = reactFormElement.props().onSubmit;
+  var submitButtonElement = component.find("[data-testid=\"".concat(submitButtonIdentifier.identifier, "\"]")).at(0);
+  var boundedMethod = reactFormElement.props().onSubmit || submitButtonElement.props().onClick;
+  var action = reactFormElement.props().onSubmit ? 'submit' : 'click';
 
   if (!boundedMethod) {
     return;
@@ -48,7 +50,7 @@ function validateForm(component, testRendererInstance, testProps, templateProps,
 
   boundedMethod = boundedMethod.name.split(' ').slice(-1)[0];
 
-  if (boundedMethod === 'onSubmit') {
+  if (['onSubmit', 'onClick'].indexOf(boundedMethod) >= 0) {
     return (0, _warnings.noInlineMethods)(submitButtonIdentifier);
   }
 
@@ -58,7 +60,7 @@ function validateForm(component, testRendererInstance, testProps, templateProps,
       return field.required;
     });
     var mockFunction = (0, _getMethodMockName2["default"])(boundedMethod);
-    return "\n      describe('Form validation', () => {\n        let field;\n        ".concat(isInstanceMethod ? 'let spy;' : "let ".concat(mockFunction), "\n        beforeEach(() => {\n          ").concat(isInstanceMethod ? (0, _mockMethod2["default"])(boundedMethod, isInstanceMethod) : "".concat(mockFunction, " = jest.fn();"), "\n          ").concat(isInstanceMethod ? (0, _mountComponent2["default"])(templateProps) : (0, _mountReactComponentWithMocks2["default"])(testProps, boundedMethod), "\n        });\n        \n        afterEach(() => {    \n          jest.clearAllMocks();\n        });\n        ").concat((0, _testValidForm2["default"])(submitButtonIdentifier, isInstanceMethod ? boundedMethod : mockFunction, testProps, isInstanceMethod, identifiers), "\n        ").concat(hasRequiredFields ? (0, _testInvalidForm2["default"])(submitButtonIdentifier, identifiers) : '', "\n      });\n      ");
+    return "\n      describe('Form validation', () => {\n        let field;\n        ".concat(isInstanceMethod ? 'let spy;' : "let ".concat(mockFunction), "\n        beforeEach(() => {\n          ").concat(isInstanceMethod ? (0, _mockMethod2["default"])(boundedMethod, isInstanceMethod) : "".concat(mockFunction, " = jest.fn();"), "\n          ").concat(isInstanceMethod ? (0, _mountComponent2["default"])(templateProps) : (0, _mountReactComponentWithMocks2["default"])(testProps, boundedMethod), "\n        });\n        \n        afterEach(() => {    \n          jest.clearAllMocks();\n        });\n        ").concat((0, _testValidForm2["default"])(submitButtonIdentifier, isInstanceMethod ? boundedMethod : mockFunction, testProps, isInstanceMethod, identifiers, action), "\n        ").concat(hasRequiredFields ? (0, _testInvalidForm2["default"])(submitButtonIdentifier, identifiers) : '', "\n      });\n      ");
   }
 
   return '';

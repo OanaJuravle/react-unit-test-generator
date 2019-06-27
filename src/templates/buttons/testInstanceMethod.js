@@ -24,7 +24,7 @@ function renderTestSuite(testProps, element, method, action, hasPositiveAssertio
   `;
 }
 
-function renderTestDescription(element, method, action, hasPositiveAssertion) {
+export function renderTestDescription(element, action, hasPositiveAssertion) {
   return `
   ${clickButton(element.identifier, action)}
   ${returnAssertion(hasPositiveAssertion)}
@@ -41,5 +41,5 @@ export default function testInstanceMethod(
   if (action === 'click') {
     return renderTestSuite(testProps, element, method, action, hasPositiveAssertion);
   }
-  return renderTestDescription(element, method, action, hasPositiveAssertion);
+  return renderTestDescription(element, action, hasPositiveAssertion);
 }

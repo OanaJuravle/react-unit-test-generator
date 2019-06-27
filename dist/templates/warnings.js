@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.noIdentifierSpecified = noIdentifierSpecified;
 exports.noFormIdentifierSpecified = noFormIdentifierSpecified;
+exports.noFieldIdentifier = noFieldIdentifier;
 exports.noInlineMethods = noInlineMethods;
 
 function noIdentifierSpecified(element) {
@@ -17,6 +18,13 @@ function noIdentifierSpecified(element) {
 }
 
 function noFormIdentifierSpecified() {
+  process.TEST_GENERATOR_WARNINGS.push({
+    failureMessage: 'No identifier specified',
+    title: "Attempt to populate a required form field"
+  });
+}
+
+function noFieldIdentifier() {
   process.TEST_GENERATOR_WARNINGS.push({
     failureMessage: 'No identifier specified',
     title: "Attempt to test the form functionallity"

@@ -1,6 +1,6 @@
 import onClickHandlers from '../onClickHandlers';
 import testRedirectToUrl from './testRedirectToUrl';
-import { noInlineMethods } from '../warnings';
+import { noInlineMethods, noIdentifierSpecified } from '../warnings';
 
 export default function testButtonsBehaviours(
   component,

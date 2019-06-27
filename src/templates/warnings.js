@@ -11,6 +11,13 @@ export function noIdentifierSpecified(element) {
 export function noFormIdentifierSpecified() {
   process.TEST_GENERATOR_WARNINGS.push({
     failureMessage: 'No identifier specified',
+    title: `Attempt to populate a required form field`,
+  });
+}
+
+export function noFieldIdentifier() {
+  process.TEST_GENERATOR_WARNINGS.push({
+    failureMessage: 'No identifier specified',
     title: `Attempt to test the form functionallity`,
   });
 }

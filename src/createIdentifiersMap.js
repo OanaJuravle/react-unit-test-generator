@@ -1,5 +1,13 @@
 const fs = require('fs');
 
+function getElementLabel(node) {
+  let currentChild = node.children[0];
+  while (currentChild && currentChild.children) {
+    currentChild = currentChild.children[0];
+  }
+  return currentChild;
+}
+
 function depthFirstTraversal(root) {
   let identifiers = {
     anchors: [],
@@ -31,7 +39,7 @@ function depthFirstTraversal(root) {
           element = {
             identifier: node.props['data-testid'],
             redirectTo: node.props.href,
-            text: node.children && node.children[0],
+            text: getElementLabel(node),
             type: 'anchor',
           };
           identifiers.anchors.push(element);
@@ -44,7 +52,7 @@ function depthFirstTraversal(root) {
           // boundedMethod: node.props.onClick.name.split(' ')[1],
           disabled: node.props.disabled || false,
           identifier: node.props['data-testid'],
-          label: node.children[0],
+          label: getElementLabel(node),
           type: 'button',
         };
         if (previousNode && previousNode.type === 'a') {

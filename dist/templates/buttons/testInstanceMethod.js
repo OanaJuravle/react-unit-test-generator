@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.renderTestDescription = renderTestDescription;
 exports["default"] = testInstanceMethod;
 
 var _clickButton = require("../../helpers/clickButton");
@@ -34,7 +35,7 @@ function renderTestSuite(testProps, element, method, action, hasPositiveAssertio
   return "\n  it('tests the \"".concat(element.label, "\" button click', () => {\n    let spy;\n    ").concat((0, _mockMethod2["default"])(method, action, true), "\n    ").concat((0, _mountComponent2["default"])(templateProps), "\n    ").concat((0, _clickButton2["default"])(element.identifier, action), "\n    ").concat(returnAssertion(hasPositiveAssertion), "\n    ").concat((0, _checkForStateUpdate2["default"])(), "\n  });\n  ");
 }
 
-function renderTestDescription(element, method, action, hasPositiveAssertion) {
+function renderTestDescription(element, action, hasPositiveAssertion) {
   return "\n  ".concat((0, _clickButton2["default"])(element.identifier, action), "\n  ").concat(returnAssertion(hasPositiveAssertion), "\n  ");
 }
 
@@ -43,5 +44,5 @@ function testInstanceMethod(testProps, element, method, action, hasPositiveAsser
     return renderTestSuite(testProps, element, method, action, hasPositiveAssertion);
   }
 
-  return renderTestDescription(element, method, action, hasPositiveAssertion);
+  return renderTestDescription(element, action, hasPositiveAssertion);
 }

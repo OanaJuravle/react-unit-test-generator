@@ -20,7 +20,7 @@ function renderTestSuite(element, testProps, boundedMethod, action, hasPositiveA
   `;
 }
 
-function renderTestDescription(element, mockFunction, action, hasPositiveAssertion) {
+export function renderTestDescription(element, mockFunction, action, hasPositiveAssertion) {
   return `
     ${clickButton(element.identifier, action)}
     ${returnAssertion(mockFunction, hasPositiveAssertion)}

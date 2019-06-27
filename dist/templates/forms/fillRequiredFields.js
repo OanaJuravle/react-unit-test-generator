@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = fillRequiredFields;
 
+var _warnings = require("../warnings");
+
+var _finalForm = require("final-form");
+
 function mockInputValue(field) {
   if (field.type === 'email' || field.identifier.toLowerCase().includes('email')) {
     return "{value: 'value@test.co'}";
@@ -14,11 +18,20 @@ function mockInputValue(field) {
     return "{checked: ".concat(!field.checked, "}");
   }
 
+  if (field.type === 'number') {
+    return "{value: 4}";
+  }
+
   return "{value: 'test'}";
 }
 
 function fillRequiredFields(identifiers) {
+  console.log(identifiers.form.field);
   return "\n    ".concat(identifiers && identifiers.form && identifiers.form.fields.map(function (field) {
-    return field.identifier && "\n            field = component.find('[data-testid=\"".concat(field.identifier, "\"] input');\n            field.simulate('change', {target: ").concat(mockInputValue(field), "});\n            ");
+    if (field.required && !field.identifier) {
+      return (0, _warnings.noFieldIdentifier)();
+    }
+
+    return field.identifier && "\n            field = component.find('[data-testid=\"".concat(field.identifier, "\"]').last();\n            field.simulate('change', {target: ").concat(mockInputValue(field), "});\n            ");
   }).join(''));
 }

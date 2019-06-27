@@ -19,15 +19,18 @@ export default function validateForm(
   }
   const submitButtonIdentifier = identifiers.form.submitButton;
   const reactFormElement = component.find(`[data-testid="${identifiers.form.identifier}"]`).at(0);
-  let boundedMethod = reactFormElement.props().onSubmit;
-
+  const submitButtonElement = component
+    .find(`[data-testid="${submitButtonIdentifier.identifier}"]`)
+    .at(0);
+  let boundedMethod = reactFormElement.props().onSubmit || submitButtonElement.props().onClick;
+  const action = reactFormElement.props().onSubmit ? 'submit' : 'click';
   if (!boundedMethod) {
     return;
   }
 
   boundedMethod = boundedMethod.name.split(' ').slice(-1)[0];
 
-  if (boundedMethod === 'onSubmit') {
+  if (['onSubmit', 'onClick'].indexOf(boundedMethod) >= 0) {
     return noInlineMethods(submitButtonIdentifier);
   }
 
@@ -62,6 +65,7 @@ export default function validateForm(
           testProps,
           isInstanceMethod,
           identifiers,
+          action,
         )}
         ${hasRequiredFields ? testInvalidForm(submitButtonIdentifier, identifiers) : ''}
       });
