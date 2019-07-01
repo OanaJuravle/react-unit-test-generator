@@ -6,7 +6,6 @@ const jest = require('jest');
 const path = require('path');
 const fs = require('fs');
 
-console.log('**** From Package ****');
 const fileName = process.env.npm_config_fileName;
 const filesToRunTestsFor = [];
 
@@ -21,7 +20,6 @@ if (!fileName) {
 
 const packageName = process.env.npm_package_name;
 const rootDir = path.join(__dirname, `../../../../${packageName}`);
-console.log('rootDir', rootDir);
 
 let srcPath = './src';
 let testsPath = './tests';

@@ -14,12 +14,21 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var fs = require('fs');
 
+function buttonExistsInList(list, element) {
+  return list.buttons.find(function (button) {
+    return button.identifier === element.identifier;
+  });
+}
+
 function getElementLabel(node) {
   var currentChild = node.children[0];
   var i = 0;
 
   while (currentChild && !currentChild.children && i < 3) {
-    currentChild = node.children[i];
+    if (node.children[i]) {
+      currentChild = node.children[i];
+    }
+
     i++;
   }
 
@@ -27,7 +36,7 @@ function getElementLabel(node) {
     currentChild = currentChild.children[0];
   }
 
-  if (typeof currentChild !== 'string') {
+  if (typeof currentChild.children[0] !== 'string') {
     return node.props['data-testid'];
   }
 
@@ -98,12 +107,17 @@ function depthFirstTraversal(root) {
 
             default:
               {
-                identifiers.buttons.push(_element);
+                if (!buttonExistsInList) {
+                  identifiers.form.submitButton = _element;
+                }
+
                 break;
               }
           }
         } else {
-          identifiers.buttons.push(_element);
+          if (!buttonExistsInList) {
+            identifiers.form.submitButton = _element;
+          }
         }
       }
 

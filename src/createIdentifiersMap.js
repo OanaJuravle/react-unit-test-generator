@@ -1,17 +1,23 @@
 const fs = require('fs');
 
+function buttonExistsInList(list, element) {
+  return list.buttons.find(button => button.identifier === element.identifier);
+}
+
 function getElementLabel(node) {
   let currentChild = node.children[0];
   let i = 0;
   while (currentChild && !currentChild.children && i < 3) {
-    currentChild = node.children[i];
+    if (node.children[i]) {
+      currentChild = node.children[i];
+    }
     i++;
   }
   while (currentChild && currentChild.children) {
     currentChild = currentChild.children[0];
   }
 
-  if (typeof currentChild !== 'string') {
+  if (typeof currentChild.children[0] !== 'string') {
     return node.props['data-testid'];
   }
   return currentChild;
@@ -74,12 +80,16 @@ function depthFirstTraversal(root) {
               break;
             }
             default: {
-              identifiers.buttons.push(element);
+              if (!buttonExistsInList) {
+                identifiers.form.submitButton = element;
+              }
               break;
             }
           }
         } else {
-          identifiers.buttons.push(element);
+          if (!buttonExistsInList) {
+            identifiers.form.submitButton = element;
+          }
         }
       }
       if (node.type === 'form') {

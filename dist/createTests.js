@@ -20,7 +20,6 @@ var path = require('path');
 
 var fs = require('fs');
 
-console.log('**** From Package ****');
 var fileName = process.env.npm_config_fileName;
 var filesToRunTestsFor = [];
 
@@ -35,7 +34,6 @@ if (!fileName) {
 
 var packageName = process.env.npm_package_name;
 var rootDir = path.join(__dirname, "../../../../".concat(packageName));
-console.log('rootDir', rootDir);
 var srcPath = './src';
 var testsPath = './tests';
 var configFileName = '';
