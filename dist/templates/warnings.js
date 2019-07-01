@@ -20,14 +20,14 @@ function noIdentifierSpecified(element) {
 function noFormIdentifierSpecified() {
   process.TEST_GENERATOR_WARNINGS.push({
     failureMessage: 'No identifier specified',
-    title: "Attempt to populate a required form field"
+    title: "Attempt to test the form functionallity"
   });
 }
 
 function noFieldIdentifier() {
   process.TEST_GENERATOR_WARNINGS.push({
     failureMessage: 'No identifier specified',
-    title: "Attempt to test the form functionallity"
+    title: "Attempt to populate a required form field"
   });
 }
 

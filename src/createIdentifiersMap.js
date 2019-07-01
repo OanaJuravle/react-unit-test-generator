@@ -2,8 +2,17 @@ const fs = require('fs');
 
 function getElementLabel(node) {
   let currentChild = node.children[0];
+  let i = 0;
+  while (currentChild && !currentChild.children && i < 3) {
+    currentChild = node.children[i];
+    i++;
+  }
   while (currentChild && currentChild.children) {
     currentChild = currentChild.children[0];
+  }
+
+  if (typeof currentChild !== 'string') {
+    return node.props['data-testid'];
   }
   return currentChild;
 }
