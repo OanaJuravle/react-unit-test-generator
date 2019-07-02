@@ -36,7 +36,7 @@ function getElementLabel(node) {
     currentChild = currentChild.children[0];
   }
 
-  if (typeof currentChild.children[0] !== 'string') {
+  if (currentChild.children[0] && typeof currentChild.children[0] !== 'string') {
     return node.props['data-testid'];
   }
 
