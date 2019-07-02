@@ -17,7 +17,7 @@ function getElementLabel(node) {
     currentChild = currentChild.children[0];
   }
 
-  if (currentChild.children[0] && typeof currentChild.children[0] !== 'string') {
+  if (currentChild.children && typeof currentChild.children[0] !== 'string') {
     return node.props['data-testid'];
   }
   return currentChild;
@@ -80,14 +80,14 @@ function depthFirstTraversal(root) {
               break;
             }
             default: {
-              if (!buttonExistsInList(identifiers, _element)) {
+              if (!buttonExistsInList(identifiers, element)) {
                 identifiers.buttons.push(element);
               }
               break;
             }
           }
         } else {
-          if (!buttonExistsInList(identifiers, _element)) {
+          if (!buttonExistsInList(identifiers, element)) {
             identifiers.buttons.push(element);
           }
         }

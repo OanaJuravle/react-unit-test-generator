@@ -36,7 +36,7 @@ function getElementLabel(node) {
     currentChild = currentChild.children[0];
   }
 
-  if (currentChild.children[0] && typeof currentChild.children[0] !== 'string') {
+  if (currentChild.children && typeof currentChild.children[0] !== 'string') {
     return node.props['data-testid'];
   }
 
@@ -84,7 +84,7 @@ function depthFirstTraversal(root) {
       }
 
       if (node.type === 'button') {
-        var _element2 = {
+        var _element = {
           // onClick method could be either attached to the <button> tag or Button component
           // boundedMethod: node.props.onClick.name.split(' ')[1],
           disabled: node.props.disabled || false,
@@ -94,21 +94,21 @@ function depthFirstTraversal(root) {
         };
 
         if (previousNode && previousNode.type === 'a') {
-          _element2.redirectTo = previousNode.props.href;
+          _element.redirectTo = previousNode.props.href;
         }
 
         if (parents.has('form')) {
           switch (node.props.type) {
             case 'submit':
               {
-                identifiers.form.submitButton = _element2;
+                identifiers.form.submitButton = _element;
                 break;
               }
 
             default:
               {
                 if (!buttonExistsInList(identifiers, _element)) {
-                  identifiers.buttons.push(_element2);
+                  identifiers.buttons.push(_element);
                 }
 
                 break;
@@ -116,7 +116,7 @@ function depthFirstTraversal(root) {
           }
         } else {
           if (!buttonExistsInList(identifiers, _element)) {
-            identifiers.buttons.push(_element2);
+            identifiers.buttons.push(_element);
           }
         }
       }
@@ -126,7 +126,7 @@ function depthFirstTraversal(root) {
       }
     } else {
       if (node.type === 'input') {
-        var _element3 = {
+        var _element2 = {
           disabled: node.props.disabled || false,
           identifier: node.props['data-testid'] || previousNode.props['data-testid'],
           required: node.props.required || false,
@@ -134,13 +134,13 @@ function depthFirstTraversal(root) {
         };
 
         if (node.props.type === 'checkbox') {
-          _element3.checked = node.props.checked;
+          _element2.checked = node.props.checked;
         }
 
         if (parents.has('form')) {
-          identifiers.form.fields.push(_element3);
+          identifiers.form.fields.push(_element2);
         } else {
-          identifiers.inputs.push(_element3);
+          identifiers.inputs.push(_element2);
         }
       }
     }
