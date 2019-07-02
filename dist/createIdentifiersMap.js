@@ -84,7 +84,7 @@ function depthFirstTraversal(root) {
       }
 
       if (node.type === 'button') {
-        var _element = {
+        var _element2 = {
           // onClick method could be either attached to the <button> tag or Button component
           // boundedMethod: node.props.onClick.name.split(' ')[1],
           disabled: node.props.disabled || false,
@@ -94,29 +94,29 @@ function depthFirstTraversal(root) {
         };
 
         if (previousNode && previousNode.type === 'a') {
-          _element.redirectTo = previousNode.props.href;
+          _element2.redirectTo = previousNode.props.href;
         }
 
         if (parents.has('form')) {
           switch (node.props.type) {
             case 'submit':
               {
-                identifiers.form.submitButton = _element;
+                identifiers.form.submitButton = _element2;
                 break;
               }
 
             default:
               {
-                if (!buttonExistsInList) {
-                  identifiers.form.submitButton = _element;
+                if (!buttonExistsInList(identifiers, _element)) {
+                  identifiers.buttons.push(_element2);
                 }
 
                 break;
               }
           }
         } else {
-          if (!buttonExistsInList) {
-            identifiers.form.submitButton = _element;
+          if (!buttonExistsInList(identifiers, _element)) {
+            identifiers.buttons.push(_element2);
           }
         }
       }
@@ -126,7 +126,7 @@ function depthFirstTraversal(root) {
       }
     } else {
       if (node.type === 'input') {
-        var _element2 = {
+        var _element3 = {
           disabled: node.props.disabled || false,
           identifier: node.props['data-testid'] || previousNode.props['data-testid'],
           required: node.props.required || false,
@@ -134,13 +134,13 @@ function depthFirstTraversal(root) {
         };
 
         if (node.props.type === 'checkbox') {
-          _element2.checked = node.props.checked;
+          _element3.checked = node.props.checked;
         }
 
         if (parents.has('form')) {
-          identifiers.form.fields.push(_element2);
+          identifiers.form.fields.push(_element3);
         } else {
-          identifiers.inputs.push(_element2);
+          identifiers.inputs.push(_element3);
         }
       }
     }

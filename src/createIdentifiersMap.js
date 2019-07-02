@@ -80,15 +80,15 @@ function depthFirstTraversal(root) {
               break;
             }
             default: {
-              if (!buttonExistsInList) {
-                identifiers.form.submitButton = element;
+              if (!buttonExistsInList(identifiers, _element)) {
+                identifiers.buttons.push(element);
               }
               break;
             }
           }
         } else {
-          if (!buttonExistsInList) {
-            identifiers.form.submitButton = element;
+          if (!buttonExistsInList(identifiers, _element)) {
+            identifiers.buttons.push(element);
           }
         }
       }
